@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+        "classpath:/struts-config_1_1.dtd">
+<!--        "http://localhost/struts-config_1_1.dtd">-->
+<!--        "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">-->
+
+<struts-config>
+    <!-- ======================================== Form Bean Definitions -->
+
+    <form-beans>
+        <form-bean
+                name="commonForm" type="org.apache.struts.validator.DynaValidatorForm">
+        </form-bean>
+    </form-beans>
+
+    <!-- =================================== Global Exception Definitions -->
+
+    <!-- =================================== Global Forward Definitions -->
+
+    <!-- =================================== Action Mapping Definitions -->
+
+    <action-mappings>
+
+        <action path="/home" type="ir.piana.dev.strutser.action.HomeAction"
+                name="commonForm" scope="request" parameter="method" validate="false" >
+            <forward name="show" path="/bodyfragments/home.jsp" />
+            <forward name="home" path="homePage" />
+        </action>
+
+        <action path="/common" type="ir.piana.dev.strutser.action.common.CommonDispatchAction"
+                name="commonForm" scope="request" parameter="method" validate="false" >
+            <forward name="common" path="commonPage" />
+        </action>
+    </action-mappings>
+
+    <controller maxFileSize="4M" inputForward="true" />
+
+    <!-- ================================ Message Resources Definitions -->
+
+    <message-resources parameter="messages"/>
+</struts-config>
+
+

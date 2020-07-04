@@ -1,0 +1,43 @@
+[
+  {
+    "name": "/common@smsList",
+    "parameter-prefix": "sll",
+    "permissions": "30600",
+    "type": "list",
+    "title": "پنل پیامک",
+    "query-name": "select-sms",
+    "property-file-path": "actions/properties.properties",
+    "control-in-row": 4,
+    "separate-tab": false,
+    "initial-select": [
+    ],
+    "control": [
+      { "name": "to_number", "title": "به شماره", "type": "string" },
+      { "name": "from_number", "title": "از شماره", "type": "string" }
+    ],
+    "button": [
+      { "name": "clear", "type": "reset", "title": "reset", "title-key": "بازنشانی" },
+      { "name": "submit", "type": "submit", "activities": [ "subsidiary-ledger-report" ], "title": "جستجو" }
+    ],
+    "print-button": [
+    ],
+    "decorator": "",
+    "rowPerPageParamName": "rowPerPage",
+    "table-activity": "sms-report",
+    "columns": [
+      { "property": "toNumber", "title": "به شماره", "type": "string" , "width": "1"},
+      { "property": "fromNumber", "title": "از شماره", "type": "string", "width": "1" }
+    ],
+    "footers": [
+    ],
+    "activities": [
+      {
+        "name": "sms-report",
+        "table-source-name": "select-sms",
+        "operations": [
+          { "order":  "1", "type": "query", "name": "select-sms" }
+        ]
+      }
+    ]
+  }
+]

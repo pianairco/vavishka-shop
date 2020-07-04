@@ -1,0 +1,13 @@
+[
+  {
+    "source-name": "select-sms",
+    "query-pattern": "select #columns# from s",
+    "sources": [
+      { "name": "sms", "alias": "s" }
+    ],
+    "columns": [
+      { "name": "s.to_number", "as": "toNumber", "type": "string" },
+      { "name": "s.from_number", "as": "fromNumber", "type": "string" }
+    ]
+  }
+]

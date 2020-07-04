@@ -1,0 +1,77 @@
+{
+  "name": "form1",
+  "controls": [
+    {
+      "type": "text",
+      "name": "fName",
+      "label": "نام",
+      "maskModel": {
+      }
+    },
+    {
+      "type": "text",
+      "name": "lName",
+      "label": "فامیلی",
+      "maskModel": {
+      }
+    },
+    {
+      "type": "number",
+      "name": "age",
+      "label": "سن",
+      "maskModel": {
+        "mask": "Number",
+        "min": "1",
+        "max": "120"
+      }
+    },
+    {
+      "type": "text",
+      "name": "nationalCode",
+      "label": "کد ملی",
+      "maskModel": {
+        "mask": "Text",
+        "pattern": "000-000000-0"
+      }
+    },
+    {
+      "type": "date",
+      "name": "birthDate",
+      "label": "تاریخ تولد",
+      "maskModel": {
+        "mask": "Date",
+        "min": "1300-01-01",
+        "max": "2040-01-01"
+      }
+    },
+    {
+      "type": "image",
+      "name": "profileImage",
+      "label": "تصویر",
+      "width": "200px",
+      "height": "200px"
+    }
+  ],
+  "buttons": [
+    {
+      "type": "bean",
+      "title": "ذخیره",
+      "image": "",
+      "icon": "",
+      "action": "FormSaver",
+      "activity": "save"
+    },
+    {
+      "type": "reset",
+      "title": "بازنشانی",
+      "image": "",
+      "icon": ""
+    },
+    {
+      "type": "js",
+      "title": "js",
+      "image": "",
+      "icon": ""
+    }
+  ]
+}
