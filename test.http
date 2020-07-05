@@ -1,0 +1,8 @@
+POST http://localhost/home.do?method=ajaxPost
+content-type: application/json
+
+{
+  "username": "rahmatii1366@gmail.com"
+}
+
+###

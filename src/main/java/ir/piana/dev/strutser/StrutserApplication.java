@@ -1,5 +1,6 @@
 package ir.piana.dev.strutser;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
 import org.springframework.boot.SpringApplication;
@@ -14,10 +15,15 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		"ir.piana.dev.strutser",
 		"org.apache.struts.action"
 })
-@ImportResource("classpath:applicationContext.xml")
+//@ImportResource("classpath:applicationContext.xml")
 @ServletComponentScan("org.apache.struts.action")
 @EnableTransactionManagement
 public class StrutserApplication {
+	@Bean("objectMapper")
+	public ObjectMapper getObjectMapper() {
+		return new ObjectMapper();
+	}
+
 	@Bean
 	public SQLQueryManagerProvider getSQLQueryManagerProvider() {
 		SQLQueryManagerProvider sqlQueryManagerProvider = new SQLQueryManagerProvider();
