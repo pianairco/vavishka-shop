@@ -6,58 +6,5 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    <bean id="dataSource"
-          class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.6.212:1521:devtwo"/>
-        <property name="username" value="T2PSSF02"/>
-        <property name="password" value="t"/>
-    </bean>
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource"
-                  ref="dataSource"/>
-        <property name="packagesToScan"
-                  value="ir.piana.dev.strutser.data.model"/>
-        <property name="hibernateProperties">
-            <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</prop>
-                <prop key="hibernate.show_sql">true</prop>
-            </props>
-        </property>
-        <property name="mappingResources">
-            <list>
-                <value>ir/piana/dev/strutser/data/model/Sms.hbm.xml</value>
-            </list>
-        </property>
-    </bean>
-
-    <bean id="txManager"
-          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
-
-    <bean id="formManagerProvider" class="ir.piana.dev.strutser.action.common.FormManagerProvider"
-          init-method="init" scope="singleton">
-        <property name="jsonResources">
-            <list>
-                <value>/actions/form.json</value>
-            </list>
-        </property>
-        <property name="sqlQueryManagerProvider">
-            <ref bean="sqlQueryManagerProvider"></ref>
-        </property>
-        <property name="debug" value="true" />
-    </bean>
-
-    <bean id="sqlQueryManagerProvider" class="ir.piana.dev.strutser.action.common.SQLQueryManagerProvider"
-          init-method="init" scope="singleton">
-        <property name="jsonResources">
-            <list>
-                <value>/actions/query.json</value>
-            </list>
-        </property>
-        <property name="debug" value="true" />
-    </bean>
 </beans>

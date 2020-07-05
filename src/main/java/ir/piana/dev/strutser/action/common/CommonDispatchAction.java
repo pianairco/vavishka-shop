@@ -1,6 +1,5 @@
 package ir.piana.dev.strutser.action.common;
 
-import ir.piana.dev.strutser.data.manager.GenericManager;
 import ir.piana.dev.strutser.dynamic.form.*;
 import ir.piana.dev.strutser.dynamic.sql.*;
 import org.apache.struts.action.*;
@@ -23,16 +22,13 @@ import java.util.stream.Collectors;
 
 @Component("common")
 public class CommonDispatchAction extends DispatchAction {
-    @Autowired
-    protected GenericManager manager;
-    protected SQLQueryManagerProvider sqlManagerProvider;
     protected SQLQueryManager sqlQueryManager;
-
-    @Autowired
     private FormManagerProvider formManagerProvider;
-    @Autowired
     private SQLQueryManagerProvider sqlQueryManagerProvider;
 
+    @Autowired
+    private DataSource dataSource;
+    
     public CommonDispatchAction() {
     }
 
@@ -131,7 +127,7 @@ public class CommonDispatchAction extends DispatchAction {
             for(ElementInitialSelect elementInitialSelect : formDef.getInitialSelects()) {
                 try {
                     sqlQueryManager.query(elementInitialSelect.getQueryName(),
-                            manager.getGenericJdbcDAO().getDataSource(), request,
+                            dataSource, request,
                             new StrutsParameterProvider(request, new LinkedHashMap<>()), elementInitialSelect.getName());
                     if(elementInitialSelect.getMapper() != null && !elementInitialSelect.getMapper().isEmpty()) {
                         Object attribute = request.getAttribute(elementInitialSelect.getName());
@@ -166,7 +162,6 @@ public class CommonDispatchAction extends DispatchAction {
                     PrintActivity fieldValue = (PrintActivity) declaredField.get(this);
                     SQLExecuter sqlExecuter = SQLExecuter.getInstance();
                     Queue<ActionActivity> actionActivities = new LinkedList<>();
-                    DataSource dataSource = manager.getGenericJdbcDAO().getDataSource();
                     connection = dataSource.getConnection();
                     connection.setAutoCommit(false);
                     statement = connection.createStatement();
@@ -205,7 +200,7 @@ public class CommonDispatchAction extends DispatchAction {
             for(ElementInitialSelect elementInitialSelect : formDef.getInitialSelects()) {
                 try {
                     sqlQueryManager.query(elementInitialSelect.getQueryName(),
-                            manager.getGenericJdbcDAO().getDataSource(), request,
+                            dataSource, request,
                             new StrutsParameterProvider(request, new LinkedHashMap<>()), elementInitialSelect.getName());
                     if(elementInitialSelect.getMapper() != null && !elementInitialSelect.getMapper().isEmpty()) {
                         Object attribute = request.getAttribute(elementInitialSelect.getName());
@@ -307,7 +302,6 @@ public class CommonDispatchAction extends DispatchAction {
                 Statement statement = null;
                 Queue<ActionActivity> actionActivities = new LinkedList<>();
                 try {
-                    DataSource dataSource = manager.getGenericJdbcDAO().getDataSource();
                     connection = dataSource.getConnection();
                     connection.setAutoCommit(false);
                     statement = connection.createStatement();

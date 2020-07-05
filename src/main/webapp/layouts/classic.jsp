@@ -1,4 +1,6 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+
 <html class="no-js" lang="fa" dir="rtl">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>

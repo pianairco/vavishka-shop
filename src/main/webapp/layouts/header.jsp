@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+
 <div class="orbit" role="region" aria-label="Favorite Space Pictures" data-orbit data-options="animInFromLeft:fade-in; animInFromRight:fade-in; animOutToLeft:fade-out; animOutToRight:fade-out;">
     <ul class="orbit-container">
         <button class="orbit-next"><span class="show-for-sr">Previous Slide</span>&#9664;&#xFE0E;</button>

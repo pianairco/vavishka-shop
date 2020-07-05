@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8" %>
+
 <footer>
         <div class="grid-x grid-margin-x expanded callout secondary">
 
