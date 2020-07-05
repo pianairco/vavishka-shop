@@ -22,6 +22,18 @@
     </definition>
 
     <!-- Home Page  -->
+    <definition name="loginPage" extends="base.definition">
+        <put-attribute name="title" value="Login Page" />
+        <put-attribute name="body" value="/root/login.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
+    <definition name="helloPage" extends="base.definition">
+        <put-attribute name="title" value="Hello Page" />
+        <put-attribute name="body" value="/root/hello.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
     <definition name="commonPage" extends="base.definition">
         <put-attribute name="title" value="Common Page" />
         <put-attribute name="body" value="/common/common.jsp" />

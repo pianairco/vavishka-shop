@@ -5,6 +5,10 @@
         name = (String)attribute;
 %>
 
+<div>
+    <a href="/hello" >hello</a>
+</div>
+
 <div class="text-center">
     <h2>Hi <%=name%></h2>
     <hr>
