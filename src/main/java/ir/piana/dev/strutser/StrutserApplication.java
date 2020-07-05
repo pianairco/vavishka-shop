@@ -9,11 +9,12 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = {
 		"ir.piana.dev.strutser",
-		"org.apache.struts.action"
+		"org.apache.struts.action",
 })
 //@ImportResource("classpath:applicationContext.xml")
 @ServletComponentScan("org.apache.struts.action")
@@ -22,6 +23,11 @@ public class StrutserApplication {
 	@Bean("objectMapper")
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
+	}
+
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 
 	@Bean
