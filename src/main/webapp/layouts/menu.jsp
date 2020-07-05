@@ -1,7 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <div class="top-bar">
         <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
-                        <li class="menu-text">Yeti Store</li>
+                        <li class="menu-text">واویشکا</li>
                         <li class="has-submenu">
                                 <a href="#">One</a>
                                 <ul class="submenu menu vertical" data-submenu>

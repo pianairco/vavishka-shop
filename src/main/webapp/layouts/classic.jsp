@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <html class="no-js" lang="fa" dir="rtl">
     <head>

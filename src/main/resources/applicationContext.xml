@@ -6,15 +6,19 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    <bean id="dataSource"
+    <!--<bean id="dataSource"
           class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
-        <property name="url" value="jdbc:oracle:thin:@192.168.6.212:1521:devtwo"/>
-        <property name="username" value="T2PSSF02"/>
-        <property name="password" value="t"/>
-    </bean>
+        <property name="driverClassName" value="org.h2.Driver"/>
+&lt;!&ndash;        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>&ndash;&gt;
+        <property name="url" value="jdbc:h2:mem:testdb"/>
+&lt;!&ndash;        <property name="url" value="jdbc:oracle:thin:@192.168.6.212:1521:devtwo"/>&ndash;&gt;
+        <property name="username" value="sa"/>
+&lt;!&ndash;        <property name="username" value="T2PSSF02"/>&ndash;&gt;
+        <property name="password" value="password"/>
+&lt;!&ndash;        <property name="password" value="t"/>&ndash;&gt;
+    </bean>-->
 
-    <bean id="sessionFactory"
+    <!--<bean id="sessionFactory"
           class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource"
                   ref="dataSource"/>
@@ -36,7 +40,7 @@
     <bean id="txManager"
           class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
+    </bean>-->
 
     <bean id="formManagerProvider" class="ir.piana.dev.strutser.action.common.FormManagerProvider"
           init-method="init" scope="singleton">

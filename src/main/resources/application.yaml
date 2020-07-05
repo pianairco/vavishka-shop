@@ -1,0 +1,22 @@
+server:
+  port: 80
+  servlet:
+    encoding.force-response: true
+    session:
+      timeout: 360
+  #server.servlet.context-path=/web-app
+spring:
+  template.cache: false
+  resources:
+    cache: false
+    cache.period: 0
+  datasource:
+    url: jdbc:h2:file:./data/vavishka
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect

@@ -1,6 +1,11 @@
 package ir.piana.dev.strutser.data.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Sms {
+  @Id
   private Long smsId;
   private String fromNumber;
   private String toNumber;

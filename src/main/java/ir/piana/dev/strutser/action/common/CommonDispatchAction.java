@@ -1,6 +1,5 @@
 package ir.piana.dev.strutser.action.common;
 
-import ir.piana.dev.strutser.data.manager.GenericManager;
 import ir.piana.dev.strutser.dynamic.form.*;
 import ir.piana.dev.strutser.dynamic.sql.*;
 import org.apache.struts.action.*;
@@ -8,6 +7,7 @@ import org.apache.struts.actions.DispatchAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,12 +24,17 @@ import java.util.stream.Collectors;
 @Component("common")
 public class CommonDispatchAction extends DispatchAction {
     @Autowired
-    protected GenericManager manager;
+    private DataSource dataSource;
+
+    @Autowired
+    protected EntityManager entityManager;
+
     protected SQLQueryManagerProvider sqlManagerProvider;
     protected SQLQueryManager sqlQueryManager;
 
     @Autowired
     private FormManagerProvider formManagerProvider;
+
     @Autowired
     private SQLQueryManagerProvider sqlQueryManagerProvider;
 
@@ -46,7 +51,8 @@ public class CommonDispatchAction extends DispatchAction {
     }
 
     @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
         if(this.isCancelled(request)) {
             ActionForward af = this.cancelled(mapping, form, request, response);
             if(af != null) {
@@ -131,7 +137,7 @@ public class CommonDispatchAction extends DispatchAction {
             for(ElementInitialSelect elementInitialSelect : formDef.getInitialSelects()) {
                 try {
                     sqlQueryManager.query(elementInitialSelect.getQueryName(),
-                            manager.getGenericJdbcDAO().getDataSource(), request,
+                            dataSource, request,
                             new StrutsParameterProvider(request, new LinkedHashMap<>()), elementInitialSelect.getName());
                     if(elementInitialSelect.getMapper() != null && !elementInitialSelect.getMapper().isEmpty()) {
                         Object attribute = request.getAttribute(elementInitialSelect.getName());
@@ -166,7 +172,6 @@ public class CommonDispatchAction extends DispatchAction {
                     PrintActivity fieldValue = (PrintActivity) declaredField.get(this);
                     SQLExecuter sqlExecuter = SQLExecuter.getInstance();
                     Queue<ActionActivity> actionActivities = new LinkedList<>();
-                    DataSource dataSource = manager.getGenericJdbcDAO().getDataSource();
                     connection = dataSource.getConnection();
                     connection.setAutoCommit(false);
                     statement = connection.createStatement();
@@ -205,7 +210,7 @@ public class CommonDispatchAction extends DispatchAction {
             for(ElementInitialSelect elementInitialSelect : formDef.getInitialSelects()) {
                 try {
                     sqlQueryManager.query(elementInitialSelect.getQueryName(),
-                            manager.getGenericJdbcDAO().getDataSource(), request,
+                            dataSource, request,
                             new StrutsParameterProvider(request, new LinkedHashMap<>()), elementInitialSelect.getName());
                     if(elementInitialSelect.getMapper() != null && !elementInitialSelect.getMapper().isEmpty()) {
                         Object attribute = request.getAttribute(elementInitialSelect.getName());
@@ -307,7 +312,6 @@ public class CommonDispatchAction extends DispatchAction {
                 Statement statement = null;
                 Queue<ActionActivity> actionActivities = new LinkedList<>();
                 try {
-                    DataSource dataSource = manager.getGenericJdbcDAO().getDataSource();
                     connection = dataSource.getConnection();
                     connection.setAutoCommit(false);
                     statement = connection.createStatement();

@@ -1,18 +1,18 @@
 package ir.piana.dev.strutser.action;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ir.piana.dev.strutser.data.manager.GenericManager;
 import ir.piana.dev.strutser.data.model.Sms;
+import ir.piana.dev.strutser.data.repository.SmsRepository;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DispatchAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -21,7 +21,10 @@ import java.util.Map;
 public class HomeAction extends DispatchAction {
 
     @Autowired
-    private GenericManager genericManager;
+    SmsRepository smsRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -37,7 +40,7 @@ public class HomeAction extends DispatchAction {
                                      HttpServletRequest request,
                                      HttpServletResponse response)
             throws Exception {
-        Object object = genericManager.findObject(Sms.class, 1l);
+//        Sms object = smsRepository.findById(1l).get();
         return mapping.findForward("home");
     }
 
