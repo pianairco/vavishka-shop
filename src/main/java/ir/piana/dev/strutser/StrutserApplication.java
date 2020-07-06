@@ -3,9 +3,11 @@ package ir.piana.dev.strutser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ImportResource;
@@ -19,7 +21,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@ImportResource("classpath:applicationContext.xml")
 @ServletComponentScan("org.apache.struts.action")
 @EnableTransactionManagement
-public class StrutserApplication {
+@EnableCaching
+public class StrutserApplication implements CommandLineRunner {
 	@Bean("objectMapper")
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
@@ -27,7 +30,8 @@ public class StrutserApplication {
 
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
+		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+		return bCryptPasswordEncoder;
 	}
 
 	@Bean
@@ -49,5 +53,10 @@ public class StrutserApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StrutserApplication.class, args);
+	}
+
+	@Override
+	public void run(String... strings) {
+
 	}
 }

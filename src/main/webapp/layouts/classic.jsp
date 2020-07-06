@@ -11,8 +11,8 @@
 <%--        <script src="https://apis.google.com/js/api:client.js"></script>--%>
         <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
         <link href="js/foundation-6.6.3/css/foundation.min.css" rel="stylesheet">
-        <script src="js/vue/vue.js"></script>
-        <script src="js/vue/vue-router.js"></script>
+<%--        <script src="js/vue/vue.js"></script>--%>
+<%--        <script src="js/vue/vue-router.js"></script>--%>
         <script src="js/axios/axios.js"></script>
     </head>
 

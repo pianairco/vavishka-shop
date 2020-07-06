@@ -16,6 +16,13 @@
     </definition>
 
     <!-- Home Page  -->
+    <definition name="errorPage" extends="base.definition">
+        <put-attribute name="title" value="Home Page" />
+        <put-attribute name="header" value="" />
+        <put-attribute name="body" value="/root/error.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
     <definition name="homePage" extends="base.definition">
         <put-attribute name="title" value="Home Page" />
         <put-attribute name="body" value="/root/home.jsp" />
@@ -23,6 +30,7 @@
 
     <!-- Home Page  -->
     <definition name="loginPage" extends="base.definition">
+        <put-attribute name="header" value="" />
         <put-attribute name="title" value="Login Page" />
         <put-attribute name="body" value="/root/login.jsp" />
     </definition>

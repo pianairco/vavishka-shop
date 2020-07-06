@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -35,13 +36,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse res) throws AuthenticationException {
         try {
-            GoogleUserEntity creds = new ObjectMapper()
-                    .readValue(req.getInputStream(), GoogleUserEntity.class);
+            GoogleUserEntity userEntity = null;
+            if("application/x-www-form-urlencoded".equalsIgnoreCase(req.getContentType())) {
+            } else {
+                userEntity = new ObjectMapper()
+                        .readValue(req.getInputStream(), GoogleUserEntity.class);
+            }
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUsername(),
-                            creds.getPassword(),
+                            userEntity.getUsername(),
+                            userEntity.getPassword(),
                             new ArrayList<>())
             );
         } catch (IOException e) {
@@ -60,5 +65,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + 864_000_000))
                 .sign(Algorithm.HMAC512("SecretKeyToGenJWTs".getBytes()));
         res.addHeader("Authorization", "Bearer " + token);
+        res.addCookie(new Cookie("session", token));
     }
 }

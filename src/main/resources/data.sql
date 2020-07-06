@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS users (
   given_name varchar(64)
 );
 
--- INSERT INTO users select * from (
--- select 1, 'admin', '1234' union
--- select 2, 'SEO', '1234'
--- ) x where not exists(select * from users);
+delete from users where id in(1, 2);
+
+INSERT INTO users (id, user_id, email, email_verified, password) values
+(1, 'admin', 'admin', 1, '$2a$10$kcXK1Vjmy79dMr.T7j5AJuWAlrGTqKWu/dk7kPFYESJGHqdCdO4.K'),
+(2, 'seo', 'seo', 1, '$2a$10$kcXK1Vjmy79dMr.T7j5AJuWAlrGTqKWu/dk7kPFYESJGHqdCdO4.K');

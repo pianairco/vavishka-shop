@@ -17,6 +17,11 @@ public class HomeRest {
         return new ModelAndView("redirect:/home", model);
     }
 
+    @GetMapping(path = "error")
+    public String getError(HttpServletRequest request) {
+        return "errorPage";
+    }
+
     @GetMapping(path = "home")
     public String getHome(HttpServletRequest request) {
         return "homePage";
@@ -29,6 +34,11 @@ public class HomeRest {
 
     @GetMapping(path = "login")
     public String getLogin(HttpServletRequest request) {
+        return "loginPage";
+    }
+
+    @GetMapping(path = "login-page")
+    public String getLoginPage(HttpServletRequest request) {
         return "loginPage";
     }
 }

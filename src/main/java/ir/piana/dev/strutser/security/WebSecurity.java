@@ -28,17 +28,21 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/vavishka-shop/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/action").permitAll()//.authenticated()
+                .antMatchers(HttpMethod.GET, "/hello").authenticated()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login-page")
+                .loginProcessingUrl("/login")
+                .defaultSuccessUrl("/home")
+                .failureUrl("/error")
                 .permitAll()
                 .and()
-                .addFilter(new JWTAuthenticationFilter(authenticationManager(), bCryptPasswordEncoder))
-                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
-                // this disables session creation on Spring Security
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+//                .addFilter(new JWTAuthenticationFilter(authenticationManager(), bCryptPasswordEncoder))
+//                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+//                 this disables session creation on Spring Security
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
     }
 
     @Override
