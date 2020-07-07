@@ -3,17 +3,20 @@
 <script src="js/vue/vue.js"></script>
 
 <div id="app">
+    <form action="/login" method="post">
     <h4 class="text-center">Log in with you email account</h4>
     <label>Email
         <input type="text" name="username" v-model="user.username" placeholder="somebody@example.com">
     </label>
     <label>Password
-        <input v-if="!showPassword" type="password" v-model="user.password" placeholder="Username">
-        <input v-if="showPassword" type="text" v-model="user.password" placeholder="Password">
+        <input v-if="!showPassword" name="password" type="password" v-model="user.password" placeholder="Username">
+        <input v-if="showPassword" name="password" type="text" v-model="user.password" placeholder="Password">
     </label>
     <input v-model="showPassword" type="checkbox" id="show-password"><label for="show-password">Show password</label>
-    <p><input type="button" v-on:click="onsubmit" class="button expanded" value="Log in"></input></p>
+    <p><input type="submit" class="button expanded" value="Log in"></input></p>
+<%--    <p><input type="button" v-on:click="onsubmit" class="button expanded" value="Log in"></input></p>--%>
     <p class="text-center"><a href="#">Forgot your password?</a></p>
+    </form>
 </div>
 
 <script>

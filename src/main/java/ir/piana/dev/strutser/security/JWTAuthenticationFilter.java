@@ -3,7 +3,9 @@ package ir.piana.dev.strutser.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Splitter;
 import ir.piana.dev.strutser.data.model.GoogleUserEntity;
+import org.apache.commons.io.IOUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -38,6 +41,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             GoogleUserEntity userEntity = null;
             if("application/x-www-form-urlencoded".equalsIgnoreCase(req.getContentType())) {
+                String s = IOUtils.toString(req.getInputStream());
+                Map<String, String> split = Splitter.on('&')
+                        .withKeyValueSeparator('=')
+                        .split(s);
+                userEntity = GoogleUserEntity.builder()
+                        .username(split.get("username"))
+                        .password(split.get("password"))
+                        .build();
             } else {
                 userEntity = new ObjectMapper()
                         .readValue(req.getInputStream(), GoogleUserEntity.class);
@@ -60,11 +71,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
-        String token = JWT.create()
-                .withSubject(((User) auth.getPrincipal()).getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 864_000_000))
-                .sign(Algorithm.HMAC512("SecretKeyToGenJWTs".getBytes()));
-        res.addHeader("Authorization", "Bearer " + token);
-        res.addCookie(new Cookie("session", token));
+//        String token = JWT.create()
+//                .withSubject(((User) auth.getPrincipal()).getUsername())
+//                .withExpiresAt(new Date(System.currentTimeMillis() + 864_000_000))
+//                .sign(Algorithm.HMAC512("SecretKeyToGenJWTs".getBytes()));
+        req.getSession().setAttribute("authentication", auth.getPrincipal());
+        req.getSession().setAttribute("authorization", ((User) auth.getPrincipal()).getUsername());
+//        res.addHeader("Authorization", "Bearer " + token);
     }
 }

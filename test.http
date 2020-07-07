@@ -1,5 +1,6 @@
 POST http://localhost/home.do?method=ajaxPost
 content-type: application/json
+Cookie: JSESSIONID=B8DF5DE335424E20BF56DBE00B6CE6FE
 
 {
   "username": "rahmatii1366@gmail.com"

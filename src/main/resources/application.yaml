@@ -21,7 +21,3 @@ spring:
     cache.period: 0
   template:
     cache: false
-  cache:
-    type: redis
-  session:
-    store-type: memory

@@ -1,10 +1,17 @@
 package ir.piana.dev.strutser.data.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
 @SequenceGenerator(name = "users_seq", initialValue = 1, sequenceName = "users_seq", allocationSize = 1)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GoogleUserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "users_seq")
@@ -41,9 +48,9 @@ public class GoogleUserEntity {
         this.givenName = givenName;
     }
 
-    public GoogleUserEntity() {
-
-    }
+//    public GoogleUserEntity() {
+//
+//    }
 
     public String getUserId() {
         return userId;

@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -26,23 +28,34 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/home.do").permitAll()
                 .antMatchers(HttpMethod.POST, "/vavishka-shop/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/action").permitAll()//.authenticated()
                 .antMatchers(HttpMethod.GET, "/hello").authenticated()
+                .antMatchers(HttpMethod.GET, "/home.do").authenticated()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/login-page")
                 .loginProcessingUrl("/login")
+                .successForwardUrl("/hello")
                 .defaultSuccessUrl("/home")
+                .successHandler(getSuccessHandler())
                 .failureUrl("/error")
                 .permitAll()
                 .and()
-//                .addFilter(new JWTAuthenticationFilter(authenticationManager(), bCryptPasswordEncoder))
-//                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), bCryptPasswordEncoder))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager()))
 //                 this disables session creation on Spring Security
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler getSuccessHandler() {
+        SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
+        handler.setUseReferer(true);
+        return handler;
     }
 
     @Override
