@@ -1,5 +1,7 @@
 package ir.piana.dev.strutser.rest;
 
+import ir.piana.dev.strutser.data.model.GoogleUserEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +30,12 @@ public class HomeRest {
     }
 
     @GetMapping(path = "hello")
-    public String getHello(HttpServletRequest request) {
-        return "helloPage";
+    public ModelAndView getHello(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("helloPage");
+        mv.setStatus(HttpStatus.OK);
+        mv.addObject(GoogleUserEntity.builder().name("ali").username("ali@gmai.com"));
+        return mv;
     }
 
     @GetMapping(path = "login")

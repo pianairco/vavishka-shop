@@ -77,6 +77,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 //                .sign(Algorithm.HMAC512("SecretKeyToGenJWTs".getBytes()));
         req.getSession().setAttribute("authentication", auth.getPrincipal());
         req.getSession().setAttribute("authorization", ((User) auth.getPrincipal()).getUsername());
+        res.sendRedirect("hello");
 //        res.addHeader("Authorization", "Bearer " + token);
     }
 }
