@@ -31,6 +31,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/home.do").permitAll()
                 .antMatchers(HttpMethod.POST, "/vavishka-shop/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/action").permitAll()//.authenticated()
+                .antMatchers(HttpMethod.POST, "/logout").authenticated()
                 .antMatchers(HttpMethod.GET, "/hello").authenticated()
                 .antMatchers(HttpMethod.GET, "/home.do").authenticated()
                 .antMatchers(HttpMethod.GET, "/**").permitAll()
