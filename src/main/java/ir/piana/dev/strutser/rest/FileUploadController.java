@@ -59,12 +59,24 @@ public class FileUploadController {
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
         List<Object> objects = Arrays.asList(new Object[10]);
+        Integer width = null;
+        Integer height = null;
         Enumeration<String> headerNames = request.getHeaderNames();
         int max = 0;
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
-            if(key.startsWith("image_upload_param_")) {
-                Integer order = Integer.parseInt(key.substring(19));
+            if(key.equalsIgnoreCase("image_upload_force_width")) {
+                String widthStr = request.getHeader(key);
+                if(widthStr != null && !widthStr.isEmpty()) {
+                    width = Integer.valueOf(widthStr);
+                }
+            } else if(key.equalsIgnoreCase("image_upload_force_height")) {
+                String heightStr = request.getHeader(key);
+                if(heightStr != null && !heightStr.isEmpty()) {
+                    height = Integer.valueOf(heightStr);
+                }
+            } else if(key.startsWith("image_upload_sql_param_")) {
+                Integer order = Integer.parseInt(key.substring(23));
                 max = order > max ? order : max;
                 String header = request.getHeader(key);
                 if(header.startsWith("i:")) {
@@ -83,7 +95,7 @@ public class FileUploadController {
 
             }
         }
-        storageService.store(file, group, objects.subList(0, max).toArray());
+        storageService.store(file, group, objects.subList(0, max).toArray(), width, height);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 

@@ -3,6 +3,7 @@ package ir.piana.dev.strutser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
+import ir.piana.dev.strutser.cfg.StaticResourceProperties;
 import ir.piana.dev.strutser.rest.image.ImageLoaderProperties;
 import ir.piana.dev.strutser.service.storage.StorageProperties;
 import ir.piana.dev.strutser.service.storage.StorageService;
@@ -24,7 +25,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ServletComponentScan("org.apache.struts.action")
 @EnableTransactionManagement
 @EnableCaching
-@EnableConfigurationProperties({ StorageProperties.class, ImageLoaderProperties.class })
+@EnableConfigurationProperties({
+		StorageProperties.class,
+		ImageLoaderProperties.class,
+		StaticResourceProperties.class
+})
 public class StrutserApplication /*implements CommandLineRunner*/ {
 	@Bean("objectMapper")
 	public ObjectMapper getObjectMapper() {
@@ -61,7 +66,7 @@ public class StrutserApplication /*implements CommandLineRunner*/ {
 	@Bean
 	CommandLineRunner init(StorageService storageService) {
 		return (args) -> {
-			storageService.deleteAll();
+//			storageService.deleteAll();
 			storageService.init();
 		};
 	}

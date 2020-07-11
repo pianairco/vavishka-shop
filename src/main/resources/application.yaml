@@ -37,3 +37,8 @@ app:
 image-loader:
   groups:
     header: select path, orders from header where id in (select id from (SELECT max(id) id, orders FROM header GROUP BY orders))
+static-resource:
+  paths:
+    '[/**]':
+      - classpath:/static/
+      - file:///c:/upload-dir/

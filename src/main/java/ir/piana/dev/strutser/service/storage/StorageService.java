@@ -11,6 +11,8 @@ public interface StorageService {
 
     void store(MultipartFile file, String group, Object[] sqlParams);
 
+    void store(MultipartFile file, String group, Object[] sqlParams, Integer width, Integer height);
+
     Stream<Path> loadAll();
 
     Path load(String filename);

@@ -29,21 +29,31 @@
             return {
                 params1: {
                     "image_upload_group": "header",
-                    "image_upload_param_1": 'i:1'
+                    "image_upload_sql_param_1": 'i:1',
+                    "image_upload_force_width": 2000,
+                    "image_upload_force_height": 750
                 },
                 params2: {
                     "image_upload_group": "header",
-                    "image_upload_param_1": 'i:2'
+                    "image_upload_sql_param_1": 'i:2',
+                    "image_upload_force_width": 2000,
+                    "image_upload_force_height": 750
                 },
                 params3: {
                     "image_upload_group": "header",
-                    "image_upload_param_1": 'i:3'
+                    "image_upload_sql_param_1": 'i:3',
+                    "image_upload_force_width": 2000,
+                    "image_upload_force_height": 750
                 },
                 params4: {
                     "image_upload_group": "header",
-                    "image_upload_param_1": 'i:4'
+                    "image_upload_sql_param_1": 'i:4',
+                    "image_upload_force_width": 2000,
+                    "image_upload_force_height": 750
                 }
             }
+        },
+        methods: {
         },
         components: {
             imageLoader

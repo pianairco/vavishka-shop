@@ -1,5 +1,8 @@
+<jsp:include page="./spinner.jsp" />
+
 <%@ page import="java.util.Arrays" %>
-<%@ page import="java.util.stream.Collectors" %><%--
+<%@ page import="java.util.stream.Collectors" %>
+<%--
   Created by IntelliJ IDEA.
   User: tentwo
   Date: 7/8/2020
@@ -11,17 +14,26 @@
 
 <script src="/js/vue/vue.js"></script>
 
+<style >
+</style>
+
 <script >
     var imageLoader = Vue.component('image-loader', {
         template: `
-        <div class="grid-x">
+
+        <div class="grid-x" >
+        <spinner v-if="state.isSpin"></spinner>
         <div class="cell small-12 text-center" >
             <button v-if="!item.image"
-                    class="button success" v-bind:style="{ width: width }"
+                    class="button primary" v-bind:style="{ width: width }"
                     style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; outline: none; box-shadow: none;"
                     type="button" v-on:click="selectImage">انتخاب</button>
-            <button v-if="item.image"
+            <button v-if="item.image && state.isSend"
                     class="button success" v-bind:style="{ width: width }"
+                    style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; outline: none; box-shadow: none;"
+                    type="button" v-on:click="reset">انتخاب دوباره</button>
+            <button v-if="item.image && !state.isSend"
+                    class="button warning" v-bind:style="{ width: width }"
                     style="border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; outline: none; box-shadow: none;"
                     type="button" v-on:click="submitFile">ارسال</button>
         </div>
@@ -59,13 +71,25 @@
                 // width: 256,
                 // height: 256,
                 message: '',
+                state: {
+                    isSend: false,
+                    isSpin: false
+                },
                 item: {
                     image: false,
                 },
                 file: ''
             }
         },
+        components: {
+            spinner
+        },
         methods: {
+            reset() {
+                this.state.isSend = false;
+                this.item.image = false;
+                this.removeImage();
+            },
             selectImage() {
                 this.$refs.file.click()
             },
@@ -104,12 +128,17 @@
                 headers["activity"] = this.activity;
                 headers["Content-Type"] = "multipart/form-data";
 
+                let self = this;
+                this.state.isSpin = true;
                 axios.post(this.url, formData, {
                     headers: headers
                 }).then(function(){
                     console.log('SUCCESS!!');
+                    self.state.isSend = true;
+                    self.state.isSpin = false;
                 }).catch(function(){
                     console.log('FAILURE!!');
+                    self.state.isSpin = false;
                 });
             }
         }

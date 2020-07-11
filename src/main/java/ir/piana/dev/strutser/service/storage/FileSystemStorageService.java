@@ -2,6 +2,7 @@ package ir.piana.dev.strutser.service.storage;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -11,10 +12,11 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.sql.DataSource;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,8 +41,13 @@ public class FileSystemStorageService implements StorageService {
 
     @Override
     public void store(MultipartFile file, String group, Object[] sqlParams) {
-        String random = RandomStringUtils.randomAlphanumeric(64).concat(
-                file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf(".")));
+        this.store(file, group, sqlParams, null, null);
+    }
+
+    public void store(MultipartFile file, String group, Object[] sqlParams, Integer width, Integer height) {
+        String format = file.getOriginalFilename()
+                .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
+        String random = RandomStringUtils.randomAlphanumeric(64).concat(".").concat(format);
         String filePath = ""
                 .concat(storageProperties.getGroups().get(group).getFolder()).concat(File.separator).concat(random);
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
@@ -55,15 +62,43 @@ public class FileSystemStorageService implements StorageService {
                                 + filename);
             }
             try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, this.rootLocation.resolve(filePath),
-                        StandardCopyOption.REPLACE_EXISTING);
+                InputStream is = null;
+                if(width != null && height != null) {
+                    BufferedImage originalImage = ImageIO.read(inputStream);
+//                    BufferedImage scaledImg = Scalr.resize(
+//                            originalImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, 2000, 750);
+                    int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB
+                            : originalImage.getType();
+                    BufferedImage scaledImg = resizeImage(originalImage, type, width, height);
+//                    ImageIO.write(scaledImg, format, new File(filePath));
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    ImageIO.write(scaledImg, format, os);
+                    // Passing: ​(RenderedImage im, String formatName, OutputStream output)
+                    is = new ByteArrayInputStream(os.toByteArray());
+                } else {
+                    is = inputStream;
+                }
+                Files.copy(is, this.rootLocation.resolve(filePath),
+                            StandardCopyOption.REPLACE_EXISTING);
+
                 jdbcTemplate.update(storageProperties.getGroups().get(group).getSql(),
-                        ArrayUtils.addAll(new Object[] { filePath }, sqlParams));
+                        ArrayUtils.addAll(new Object[]{filePath}, sqlParams));
             }//jdbcTemplate.queryForList("select * from header where id in (select id from (SELECT max(id) id, orders FROM header GROUP BY orders))")
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file " + filename, e);
         }
+    }
+
+    private static BufferedImage resizeImage(BufferedImage originalImage, int type,
+                                             Integer img_width, Integer img_height)
+    {
+        BufferedImage resizedImage = new BufferedImage(img_width, img_height, type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, img_width, img_height, null);
+        g.dispose();
+
+        return resizedImage;
     }
 
     @Override
@@ -111,7 +146,9 @@ public class FileSystemStorageService implements StorageService {
     @Override
     public void init() {
         try {
-            Files.createDirectories(rootLocation);
+            if(!Files.exists(rootLocation)) {
+                Files.createDirectories(rootLocation);
+            }
         }
         catch (IOException e) {
             throw new StorageException("Could not initialize storage", e);
