@@ -5,6 +5,10 @@ server:
     encoding:
       force-response: true
 spring:
+  servlet:
+    multipart:
+      max-file-size: 2048KB
+      max-request-size: 2048KB
   datasource:
     url: jdbc:h2:file:./data/vavishka
     #    url: jdbc:h2:mem:testdb
@@ -21,3 +25,15 @@ spring:
     cache.period: 0
   template:
     cache: false
+storage:
+  location: c:/upload-dir
+  groups:
+    header:
+      folder: header
+      sql: insert into header (path, orders) values (?, ?)
+app:
+  mode:
+    debug: true
+image-loader:
+  groups:
+    header: select path, orders from header where id in (select id from (SELECT max(id) id, orders FROM header GROUP BY orders))

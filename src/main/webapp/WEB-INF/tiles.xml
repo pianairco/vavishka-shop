@@ -4,54 +4,66 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-
-    <!-- Base Define -->
-    <definition name="base.definition"
-                template="/layouts/classic.jsp">
+    <definition name="admin.definition"
+                template="/layouts/admin/layout.jsp">
         <put-attribute name="title" value="" />
-        <put-attribute name="header" value="/layouts/header.jsp" />
-        <put-attribute name="menu" value="/layouts/menu.jsp" />
+        <put-attribute name="header" value="/layouts/admin/header.jsp" />
+        <put-attribute name="menu" value="/layouts/admin/menu.jsp" />
         <put-attribute name="body" value="" />
-        <put-attribute name="footer" value="/layouts/footer.jsp" />
+        <put-attribute name="footer" value="/layouts/admin/footer.jsp" />
     </definition>
 
     <!-- Home Page  -->
-    <definition name="errorPage" extends="base.definition">
+    <definition name="admin.headerPage" extends="admin.definition">
+        <put-attribute name="title" value="Admin Page" />
+        <put-attribute name="body" value="/admin/header-image.jsp" />
+    </definition>
+
+    <!-- Base Define -->
+    <definition name="business.definition"
+                template="/layouts/business/layout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/layouts/business/header.jsp" />
+        <put-attribute name="menu" value="/layouts/business/menu.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/layouts/business/footer.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
+    <definition name="errorPage" extends="business.definition">
         <put-attribute name="title" value="Home Page" />
         <put-attribute name="header" value="" />
         <put-attribute name="body" value="/root/error.jsp" />
     </definition>
 
     <!-- Home Page  -->
-    <definition name="homePage" extends="base.definition">
+    <definition name="homePage" extends="business.definition">
         <put-attribute name="title" value="Home Page" />
         <put-attribute name="body" value="/root/home.jsp" />
     </definition>
 
     <!-- Home Page  -->
-    <definition name="loginPage" extends="base.definition">
+    <definition name="loginPage" extends="business.definition">
         <put-attribute name="header" value="" />
         <put-attribute name="title" value="Login Page" />
         <put-attribute name="body" value="/root/login.jsp" />
     </definition>
 
     <!-- Home Page  -->
-    <definition name="helloPage" extends="base.definition">
+    <definition name="helloPage" extends="business.definition">
         <put-attribute name="title" value="Hello Page" />
         <put-attribute name="body" value="/root/hello.jsp" />
     </definition>
 
     <!-- Home Page  -->
-    <definition name="commonPage" extends="base.definition">
+    <definition name="commonPage" extends="business.definition">
         <put-attribute name="title" value="Common Page" />
         <put-attribute name="body" value="/common/common.jsp" />
     </definition>
 
     <!-- ContactUs Page -->
-    <definition name="contactusPage" extends="base.definition">
+    <definition name="contactusPage" extends="business.definition">
         <put-attribute name="title" value="Contact Us" />
         <put-attribute name="body" value="/root/contactus.jsp" />
     </definition>
-
-
 </tiles-definitions>

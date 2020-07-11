@@ -3,14 +3,16 @@ package ir.piana.dev.strutser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
+import ir.piana.dev.strutser.rest.image.ImageLoaderProperties;
+import ir.piana.dev.strutser.service.storage.StorageProperties;
+import ir.piana.dev.strutser.service.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -22,7 +24,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @ServletComponentScan("org.apache.struts.action")
 @EnableTransactionManagement
 @EnableCaching
-public class StrutserApplication implements CommandLineRunner {
+@EnableConfigurationProperties({ StorageProperties.class, ImageLoaderProperties.class })
+public class StrutserApplication /*implements CommandLineRunner*/ {
 	@Bean("objectMapper")
 	public ObjectMapper getObjectMapper() {
 		return new ObjectMapper();
@@ -55,8 +58,16 @@ public class StrutserApplication implements CommandLineRunner {
 		SpringApplication.run(StrutserApplication.class, args);
 	}
 
-	@Override
-	public void run(String... strings) {
-
+	@Bean
+	CommandLineRunner init(StorageService storageService) {
+		return (args) -> {
+			storageService.deleteAll();
+			storageService.init();
+		};
 	}
+
+//	@Override
+//	public void run(String... strings) {
+//
+//	}
 }

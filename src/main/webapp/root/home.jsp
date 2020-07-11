@@ -12,9 +12,9 @@
         <a href="/hello" >hello</a>
     </div>
 
-    <image-loader></image-loader>
-    <image-loader></image-loader>
-    <image-loader></image-loader>
+    <image-loader :url="'/images/image-upload'" :action="'imageUploader'" :activity="'saveHeaderImage'"></image-loader>
+<%--    <image-loader :restUrl="/images/image-upload" :action="imageUploader" :activity="saveHeaderImage"></image-loader>--%>
+<%--    <image-loader :restUrl="/images/image-upload" :action="imageUploader" :activity="saveHeaderImage"></image-loader>--%>
 
     <div class="text-center">
         <h2>Hi <%=name%></h2>
