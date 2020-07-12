@@ -1,7 +1,5 @@
 <jsp:include page="./spinner.jsp" />
 
-<%@ page import="java.util.Arrays" %>
-<%@ page import="java.util.stream.Collectors" %>
 <%--
   Created by IntelliJ IDEA.
   User: tentwo
@@ -13,9 +11,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <script src="/js/vue/vue.js"></script>
-
-<style >
-</style>
 
 <script >
     var imageLoader = Vue.component('image-loader', {

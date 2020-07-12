@@ -1,6 +1,3 @@
-<%@ page import="java.util.Arrays" %>
-<%@ page import="java.util.stream.Collectors" %>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <script src="/js/vue/vue.js"></script>
