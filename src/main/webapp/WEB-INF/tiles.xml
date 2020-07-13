@@ -4,6 +4,21 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
+    <definition name="picnic.definition"
+                template="/layouts/picnic/layout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/layouts/picnic/header.jsp" />
+        <put-attribute name="menu" value="/layouts/picnic/menu.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/layouts/picnic/footer.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
+    <definition name="picnic.homePage" extends="picnic.definition">
+        <put-attribute name="title" value="Picnic Page" />
+        <put-attribute name="body" value="/picnic/home.jsp" />
+    </definition>
+
     <definition name="admin.definition"
                 template="/layouts/admin/layout.jsp">
         <put-attribute name="title" value="" />

@@ -40,5 +40,6 @@ image-loader:
 static-resource:
   paths:
     '[/**]':
+      - classpath:/public/
       - classpath:/static/
       - file:///c:/upload-dir/
