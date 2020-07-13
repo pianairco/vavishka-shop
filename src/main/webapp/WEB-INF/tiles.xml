@@ -4,6 +4,18 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
+    <definition name="tailwind.definition"
+                template="/layouts/tailwind/layout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="body" value="" />
+    </definition>
+
+    <!-- Home Page  -->
+    <definition name="tailwind.homePage" extends="tailwind.definition">
+        <put-attribute name="title" value="Tailwind Page" />
+        <put-attribute name="body" value="/tailwind/home.jsp" />
+    </definition>
+
     <definition name="picnic.definition"
                 template="/layouts/picnic/layout.jsp">
         <put-attribute name="title" value="" />

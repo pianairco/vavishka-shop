@@ -24,7 +24,6 @@
             }
         },
         components: {
-            spinner
         },
         methods: {
         }
