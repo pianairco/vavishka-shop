@@ -4,6 +4,21 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
+    <definition name="bulma.definition"
+                template="/layouts/bulma/layout.jsp">
+        <put-attribute name="title" value="" />
+        <put-attribute name="header" value="/layouts/bulma/header.jsp" />
+        <put-attribute name="menu" value="/layouts/bulma/menu.jsp" />
+        <put-attribute name="body" value="" />
+        <put-attribute name="footer" value="/layouts/bulma/footer.jsp" />
+    </definition>
+
+    <!-- Home Page  -->
+    <definition name="bulma.homePage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/home.jsp" />
+    </definition>
+
     <definition name="tailwind.definition"
                 template="/layouts/tailwind/layout.jsp">
         <put-attribute name="title" value="" />
