@@ -48,6 +48,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .failureUrl("/error")
                 .permitAll()
                 .and()
+                .headers().frameOptions().disable()
+                .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), bCryptPasswordEncoder))
                 .addFilter(new JWTAuthorizationFilter(authenticationManager()))
 //                 this disables session creation on Spring Security

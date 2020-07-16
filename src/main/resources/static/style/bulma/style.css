@@ -1,3 +1,11 @@
+.navbar {
+    background-color: #eaedea !important;
+}
+
+.columns {
+    margin-top: 0;
+}
+
 @font-face {
     font-family: 'IranNastaliq';
     src: url('/style/font/IranNastaliq.ttf') format('truetype'); /* Safari, Android, iOS */
