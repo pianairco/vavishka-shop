@@ -1,73 +1,151 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tentwo
-  Date: 7/8/2020
-  Time: 9:05 AM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<script src="/js/vue/vue.js"></script>
-
-<div id="app" class="columns">
-    <div class="column is-three-fifths is-offset-one-fifth" >
-        <div class="columns">
-            <div class="column is-one-quarter" >
-                <article class="media">
-                    <figure class="media-right">
-                        <p class="image is-64x64">
-                            <img src="https://bulma.io/images/placeholders/128x128.png">
-                        </p>
-                    </figure>
-                    <div class="media-content">
-                        <div class="content">
-                            <p>
-                                <strong>John Smith</strong> <small>@johnsmith</small> <small>31m</small>
-                                <br>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+<div class="container">
+    <div class="columns is-mobile is-multiline">
+        <div class="column is-full-mobile is-one-quarter-desktop">
+            <a class="button is-primary is-block is-alt is-large" href="#">New Post</a>
+            <aside class="menu">
+                <p class="menu-label">
+                    Tags
+                </p>
+                <ul class="menu-list">
+                    <li><span class="tag is-primary is-medium ">Dashboard</span></li>
+                    <li><span class="tag is-link is-medium ">Customers</span></li>
+                    <li><span class="tag is-light is-danger is-medium ">Authentication</span></li>
+                    <li><span class="tag is-dark is-medium ">Payments</span></li>
+                    <li><span class="tag is-success is-medium ">Transfers</span></li>
+                    <li><span class="tag is-warning is-medium ">Balance</span></li>
+                    <li><span class="tag is-medium ">Question</span></li>
+                </ul>
+            </aside>
+        </div>
+        <div class="column is-full-mobile is-three-quarters-desktop">
+            <div class="box content">
+                <article class="post">
+                    <h4>Bulma: How do you center a button in a box?</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
                             </p>
                         </div>
-                        <nav class="level is-mobile">
-                            <div class="level-right">
-                                <a class="level-item">
-                                    <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                                </a>
-                                <a class="level-item">
-                                    <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                                </a>
-                                <a class="level-item">
-                                    <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                                </a>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@jsmith</a> replied 34 minutes ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
                             </div>
-                        </nav>
-                    </div>
-                    <div class="media-left">
-                        <span class="icon is-medium has-text-info">
-                            <i class="fa fa-2x fa-chevron-left"></i>
-                        </span>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 1</span>
+                        </div>
                     </div>
                 </article>
-            </div>
-            <div class="column is-three-quarter" >
-                <figure class="image ">
-                    <iframe width="640" height="360" src="/images/1.jpg" frameborder="0" allowfullscreen></iframe>
-                </figure>
+                <article class="post">
+                    <h4>How can I make a bulma button go full width?</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@red</a> replied 40 minutes ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 0</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post">
+                    <h4>TypeError: Data must be a string or a buffer when trying touse vue-bulma-tabs</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@jsmith</a> replied 53 minutes ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 13</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post">
+                    <h4>How to vertically center elements in Bulma?</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@brown</a> replied 3 hours ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post">
+                    <h4>I'm trying to use hamburger menu on bulma css, but it doesn't work. What is wrong?</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@hamburgler</a> replied 5 hours ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="post">
+                    <h4>How to make tiles wrap with Bulma CSS?</h4>
+                    <div class="media">
+                        <div class="media-left">
+                            <p class="image is-32x32">
+                                <img src="http://bulma.io/images/placeholders/128x128.png">
+                            </p>
+                        </div>
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <a href="#">@rapper</a> replied 3 hours ago &nbsp;
+                                    <span class="tag">Question</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media-right">
+                            <span class="has-text-grey-light"><i class="fa fa-comments"></i> 2</span>
+                        </div>
+                    </div>
+                </article>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-    var app = new Vue({
-        el: '#app',
-        data: function () {
-            return {
-            }
-        },
-        methods: {
-        },
-        components: {
-        },
-    });
-</script>

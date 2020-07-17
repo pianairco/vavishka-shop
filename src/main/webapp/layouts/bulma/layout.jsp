@@ -9,15 +9,15 @@
     <title><tiles:getAsString name="title" /></title>
 
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-    <link href="/js/bulma/bulma-rtl.css" rel="stylesheet">
-    <%--        <script src="js/vue/vue.js"></script>--%>
+    <link href="/js/bulma/bulma-rtl.min.css" rel="stylesheet">
+            <script src="js/vue/vue.js"></script>
     <%--        <script src="js/vue/vue-router.js"></script>--%>
     <%--        <script src="/js/axios/axios.js"></script>--%>
 
-    <link href="/style/bulma/style.css" rel="stylesheet">
+    <link href="/me-style.css" rel="stylesheet">
 </head>
 
-<body class="has-navbar-fixed-top">
+<body >
 <tiles:insertAttribute name="menu" />
 
 <tiles:insertAttribute name="header" />

@@ -1,63 +1,63 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" %>
 
 
-<nav class="navbar is-transparent is-fixed-top" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand" >
-        <a class="navbar-item" href="https://bulma.io">
-            <img src="/img/bulma-logo.png" width="112" height="28">
-        </a>
-
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item">
-                Home
-            </a>
-
-            <a class="navbar-item">
-                Documentation
-            </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
-                </a>
-
-                <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
-                    </a>
-                    <a class="navbar-item">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item">
-                        Report an issue
-                    </a>
-                </div>
+<nav id="my-topbar" class="navbar is-white topNav">
+    <div class="container">
+        <div class="navbar-brand">
+            <span class="navbar-item">
+                <img src="/images/vavishka.png" width="112" height="28">
+            </span>
+            <div class="navbar-burger burger" data-target="topNav" v-bind:class="{ 'is-active': isActive }" v-on:click="menuClick">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
-
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
+        <div id="topNav" class="navbar-menu" v-bind:class="{ 'is-active': isActive }">
+            <div class="navbar-start">
+                <a class="navbar-item" href="cover.html">Home</a>
+                <a class="navbar-item" href="blog.html">Blog</a>
+                <a class="navbar-item" href="instaAlbum.html">Album</a>
+                <a class="navbar-item" href="search.html">Search</a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <a class="button is-small">
+										<span class="icon">
+											<i class="fa fa-user-plus"></i>
+										</span>
+                                <span>
+											Register
+										</span>
+                            </a>
+                        </p>
+                        <p class="control">
+                            <a class="button is-small is-info is-outlined">
+										<span class="icon">
+											<i class="fa fa-user"></i>
+										</span>
+                                <span>Login</span>
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+
+<script>
+    var myTopbar = new Vue({
+        el: '#my-topbar',
+        data: {
+            isActive: false
+        },
+        methods: {
+            menuClick: function () {
+                this.isActive = !this.isActive;
+            }
+        }
+    });
+</script>
