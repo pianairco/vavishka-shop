@@ -15,10 +15,10 @@
         </div>
         <div id="topNav" class="navbar-menu" v-bind:class="{ 'is-active': isActive }">
             <div class="navbar-start">
-                <a class="navbar-item" href="cover.html">Home</a>
-                <a class="navbar-item" href="blog.html">Blog</a>
-                <a class="navbar-item" href="instaAlbum.html">Album</a>
-                <a class="navbar-item" href="search.html">Search</a>
+                <a class="navbar-item" href="/bulma/home">صفحه اصلی</a>
+                <a class="navbar-item" href="/bulma/sample-search">آموزش ها</a>
+                <a class="navbar-item" href="/bulma/shop">فروشگاه</a>
+                <a class="navbar-item" href="/bulma/gallery">گالری تصاویر</a>
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">

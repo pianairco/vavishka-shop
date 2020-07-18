@@ -11,7 +11,27 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("bulma")
 public class BulmaRest {
     @GetMapping(path = "/home")
-    public ModelAndView getHeaderImage(HttpServletRequest request) {
+    public ModelAndView getHome(HttpServletRequest request) {
         return new ModelAndView("bulma.homePage");
+    }
+
+    @GetMapping(path = "/shop")
+    public ModelAndView getShop(HttpServletRequest request) {
+        return new ModelAndView("bulma.shopPage");
+    }
+
+    @GetMapping(path = "/gallery")
+    public ModelAndView getGallery(HttpServletRequest request) {
+        return new ModelAndView("bulma.galleryPage");
+    }
+
+    @GetMapping(path = "/sample")
+    public ModelAndView getSamplePage(HttpServletRequest request) {
+        return new ModelAndView("bulma.samplePage");
+    }
+
+    @GetMapping(path = "/sample-search")
+    public ModelAndView getSampleSearchPage(HttpServletRequest request) {
+        return new ModelAndView("bulma.sampleSearchPage");
     }
 }

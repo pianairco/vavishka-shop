@@ -19,31 +19,25 @@
         <put-attribute name="body" value="/bulma/home.jsp" />
     </definition>
 
-    <definition name="tailwind.definition"
-                template="/layouts/tailwind/layout.jsp">
-        <put-attribute name="title" value="" />
-        <put-attribute name="body" value="" />
-    </definition>
-
     <!-- Home Page  -->
-    <definition name="tailwind.homePage" extends="tailwind.definition">
-        <put-attribute name="title" value="Tailwind Page" />
-        <put-attribute name="body" value="/tailwind/home.jsp" />
+    <definition name="bulma.galleryPage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/gallery.jsp" />
     </definition>
 
-    <definition name="picnic.definition"
-                template="/layouts/picnic/layout.jsp">
-        <put-attribute name="title" value="" />
-        <put-attribute name="header" value="/layouts/picnic/header.jsp" />
-        <put-attribute name="menu" value="/layouts/picnic/menu.jsp" />
-        <put-attribute name="body" value="" />
-        <put-attribute name="footer" value="/layouts/picnic/footer.jsp" />
+    <definition name="bulma.samplePage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/sample.jsp" />
     </definition>
 
-    <!-- Home Page  -->
-    <definition name="picnic.homePage" extends="picnic.definition">
-        <put-attribute name="title" value="Picnic Page" />
-        <put-attribute name="body" value="/picnic/home.jsp" />
+    <definition name="bulma.shopPage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/shop.jsp" />
+    </definition>
+
+    <definition name="bulma.sampleSearchPage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/sample-search.jsp" />
     </definition>
 
     <definition name="admin.definition"

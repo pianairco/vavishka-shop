@@ -77,17 +77,7 @@
                                         </div>
                                         <button class="button is-primary is-rounded has-text-weight-bold" type="submit"><span>Subscribe</span></button>
 
-                                        <script>
-                                                (function(g,h,o,s,t){
-                                                        var buster = function(b,m) {
-                                                                h[o]('input.'+b).forEach(function (i) {
-                                                                        i.value=i.value || m;
-                                                                });
-                                                        };
-                                                        buster('location', g.location.href);
-                                                        buster('referrer', h.referrer);
-                                                })(window,document,'querySelectorAll','value');
-                                        </script>
+
 
                                 </form>
 
