@@ -25,6 +25,11 @@
         <put-attribute name="body" value="/bulma/gallery.jsp" />
     </definition>
 
+    <definition name="bulma.adminSamplePage" extends="bulma.definition">
+        <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="body" value="/bulma/admin/admin-sample.jsp" />
+    </definition>
+
     <definition name="bulma.samplePage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
         <put-attribute name="body" value="/bulma/sample.jsp" />

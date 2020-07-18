@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-2by1">
-                            <img src="https://images.pexels.com/photos/167635/pexels-photo-167635.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="Placeholder image">
+                            <img src="/img/lake.jpg" alt="Placeholder image">
                         </figure>
                     </div>
                     <div class="card-content">
@@ -37,7 +37,7 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-2by1">
-                            <img src="https://images.pexels.com/photos/167635/pexels-photo-167635.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="Placeholder image">
+                            <img src="/img/halong.jpg" alt="Placeholder image">
                         </figure>
                     </div>
                     <div class="card-content">
@@ -61,7 +61,7 @@
                 <div class="card">
                     <div class="card-image">
                         <figure class="image is-2by1">
-                            <img src="https://images.pexels.com/photos/167635/pexels-photo-167635.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=940" alt="Placeholder image">
+                            <img src="/img/forest.jpg" alt="Placeholder image">
                         </figure>
                     </div>
                     <div class="card-content">

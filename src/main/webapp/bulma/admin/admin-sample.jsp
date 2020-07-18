@@ -4,7 +4,7 @@
 <div class="container" id="bulma-sample-page">
     <div class="columns is-mobile is-multiline">
         <div class="column is-full-mobile is-one-quarter-desktop">
-            <h3 class="has-text-centered title has-background-grey-light" style="padding-bottom: 10px; margin-bottom: 0px; border-radius: 4px;">فهرست</h3>
+            <a class="button is-primary is-block is-alt is-large" href="#">New Post</a>
             <aside class="menu">
                 <ul class="menu-list" <%--style=" overflow-y: auto; display: flex; flex-direction: column; max-height: 800px;"--%>>
                     <li><pictorial-menu-item></pictorial-menu-item></li>

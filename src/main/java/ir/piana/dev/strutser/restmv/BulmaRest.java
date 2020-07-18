@@ -30,6 +30,11 @@ public class BulmaRest {
         return new ModelAndView("bulma.samplePage");
     }
 
+    @GetMapping(path = "/admin/sample")
+    public ModelAndView getAdminSamplePage(HttpServletRequest request) {
+        return new ModelAndView("bulma.adminSamplePage");
+    }
+
     @GetMapping(path = "/sample-search")
     public ModelAndView getSampleSearchPage(HttpServletRequest request) {
         return new ModelAndView("bulma.sampleSearchPage");
