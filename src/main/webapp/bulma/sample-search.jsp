@@ -13,9 +13,9 @@
         %>
         <div class="column is-full-mobile is-one-quarter-desktop">
             <div class="card">
-                <picture-box :images="addImage"></picture-box>
+                <picture-box></picture-box>
                 <div class="card-content">
-                    <div class="media">
+                    <div class="media" style="padding-top: 15px;">
                         <div class="media-content">
                             <div class="field">
                                 <div class="control">
@@ -26,7 +26,7 @@
                     </div>
 
                     <div class="content">
-                        <textarea class="textarea" placeholder="توضیحات" rows="3"></textarea>
+                        <textarea class="textarea" placeholder="توضیحات" rows="2"></textarea>
                     </div>
                 </div>
                 <footer class="card-footer">

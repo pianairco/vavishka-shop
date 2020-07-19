@@ -13,13 +13,19 @@
         template: `
             <div class="card-image">
                     <figure class="image is-4by3">
-                        <img v-bind:src="images[idx]" alt="Placeholder image">
+                        <img v-bind:src="images[idx]" alt="Placeholder image" v-if="images">
+                        <img v-bind:src="unknownURL" alt="Placeholder image" v-if="!images">
                     </figure>
-                    <div class="columns is-mobile is-vcentered is-overlay" v-if="images && images.length > 1">
-                        <div class="column is-narrow"><button v-on:click="next" class="button is-white fa fa-angle-right"></button></div>
-                        <div class="column">&nbsp;</div>
-                        <div class="column is-narrow"><button v-on:click="prev" class="button is-white is-transparent fa fa-angle-left"></button></div>
-                    </div>
+                    <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
+<div class="column is-full has-background-grey" style="height: 20%;"></div>
+<div class="column is-full is-info" style="height: 60%;">
+<div class="columns is-mobile is-vcentered is-multiline" v-if="images && images.length > 1" >
+    <div class="column is-narrow"><button v-on:click="next" class="button is-white fa fa-angle-right" ></button></div>
+    <div class="column">&nbsp;</div>
+    <div class="column is-narrow"><button v-on:click="prev" class="button is-white is-transparent fa fa-angle-left"></button></div>
+</div>
+</div>
+<div class="column is-full is-info" style="height: 20%;"></div>
                 </div>
 `,
         props: {
