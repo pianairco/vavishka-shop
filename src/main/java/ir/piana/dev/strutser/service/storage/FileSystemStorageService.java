@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -85,6 +86,56 @@ public class FileSystemStorageService implements StorageService {
         }
         catch (IOException e) {
             throw new StorageException("Failed to store file " + filename, e);
+        }
+    }
+
+    public String store(String sourceData, String group) {
+        String format = "";
+        try {
+            String[] parts = sourceData.split(",");
+            String imageString = parts[1];
+
+            if(parts[0].startsWith("data:")) {
+                format = parts[0].substring(5).split(";")[0];
+                if(format.equalsIgnoreCase("image/jpeg"))
+                    format = "jpeg";
+                if(format.equalsIgnoreCase("image/jpg"))
+                    format = "jpg";
+                else if(format.equalsIgnoreCase("image/png"))
+                    format = "png";
+            }
+            String random = RandomStringUtils.randomAlphanumeric(64).concat(".").concat(format);
+            String filePath = "".concat(storageProperties.getGroups().get(group).getFolder())
+                    .concat(File.separator).concat(random);
+
+            BufferedImage originalImage = null;
+            byte[] imageByte;
+
+            BASE64Decoder decoder = new BASE64Decoder();
+            imageByte = decoder.decodeBuffer(imageString);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+            originalImage = ImageIO.read(bis);
+            bis.close();
+
+            int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB
+                    : originalImage.getType();
+
+            BufferedImage scaledImg = resizeImage(originalImage, type,
+                    storageProperties.getGroups().get(group).getWidth(),
+                    storageProperties.getGroups().get(group).getHeight());
+
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(scaledImg, format, os);
+            // Passing: ​(RenderedImage im, String formatName, OutputStream output)
+            InputStream is = new ByteArrayInputStream(os.toByteArray());
+
+            Files.copy(is, this.rootLocation.resolve(filePath),
+                    StandardCopyOption.REPLACE_EXISTING);
+
+            return filePath;
+        }
+        catch (IOException e) {
+            throw new StorageException("Failed to store file!", e);
         }
     }
 

@@ -1,5 +1,7 @@
+<%@ page import="ir.piana.dev.strutser.util.JspUtil" %>
 <%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <jsp:include page="/module/bulma/pictorial-sample-item.jsp" />
+<jsp:include page="/module/bulma/pictorial-sample-item-creator.jsp" />
 
 <%
     Boolean isAdmin = request.getAttribute("isAdmin") != null && request.getAttribute("isAdmin") instanceof Boolean ?
@@ -11,34 +13,17 @@
         <%
             if(isAdmin) {
         %>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <div class="card">
-                <picture-box></picture-box>
-                <div class="card-content">
-                    <div class="media" style="padding-top: 15px;">
-                        <div class="media-content">
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-primary" type="text" placeholder="عنوان">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content">
-                        <textarea class="textarea" placeholder="توضیحات" rows="2"></textarea>
-                    </div>
-                </div>
-                <footer class="card-footer">
-                    <a class="card-footer-item button is-white" v-bind:href="link">
-                        افزودن
-                    </a>
-                </footer>
+            <div class="column is-full-mobile is-one-quarter-desktop">
+                <pictorial-sample-item-creator v-on:add-item="addItem" :form-name="'uploader1'" :property-name="'image'"></pictorial-sample-item-creator>
             </div>
-        </div>
         <%
             }
         %>
+        <div v-for="s in samples" class="column is-full-mobile is-one-quarter-desktop">
+            <pictorial-sample-item :link="'/bulma/sample'" :images="s['IMAGESRC']"
+                                   :description="s['DESCRIPTION']"
+                                   :title="s['TITLE']"></pictorial-sample-item>
+        </div>
         <div class="column is-full-mobile is-one-quarter-desktop">
             <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
                                    :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
@@ -73,22 +58,38 @@
 </div>
 
 <script>
+    <%=JspUtil.getStore("store")%>
+
     var app = new Vue({
         el: '#bulma-sample-search-page',
         data: function () {
             return {
+                formName: 'uploader1',
+                propertyName: 'propertyName1',
                 addImage: [
                     '/img/add-document.png'
                 ],
                 images: [
                     '/img/480x480.png', '/img/480x480-2.png'
-                ]
+                ],
+                samples: ${sample},
+                sharedState: store.state
             }
         },
         methods: {
+            addItem(form) {
+                console.log(JSON.stringify(form));
+                axios.post('/sample/add', form, { headers: { 'file-group': 'sample' } })
+                    .then((response) => {
+                        this.items = response.data;
+                        this.render = true;
+                    })
+                    .catch((err) => { this.message = err; });
+            }
         },
         components: {
-            pictorialSampleItem
+            pictorialSampleItem,
+            pictorialSampleItemCreator
         },
     });
 </script>

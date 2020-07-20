@@ -5,6 +5,7 @@ import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
 import ir.piana.dev.strutser.cfg.StaticResourceProperties;
 import ir.piana.dev.strutser.rest.image.ImageLoaderProperties;
+import ir.piana.dev.strutser.service.sql.SqlProperties;
 import ir.piana.dev.strutser.service.storage.StorageProperties;
 import ir.piana.dev.strutser.service.storage.StorageService;
 import org.springframework.boot.CommandLineRunner;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableCaching
 @EnableConfigurationProperties({
 		StorageProperties.class,
+		SqlProperties.class,
 		ImageLoaderProperties.class,
 		StaticResourceProperties.class
 })

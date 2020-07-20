@@ -23,7 +23,14 @@ INSERT INTO users (id, user_id, email, email_verified, password) values
 (2, 'seo', 'seo', 1, '$2a$10$kcXK1Vjmy79dMr.T7j5AJuWAlrGTqKWu/dk7kPFYESJGHqdCdO4.K');
 
 CREATE TABLE IF NOT EXISTS header (
-                                     id bigint default vavishka_seq.nextval primary key,
-                                     path varchar(128),
-                                     orders number(1)
+    id bigint default vavishka_seq.nextval primary key,
+    path varchar(128),
+    orders number(1)
+);
+
+CREATE TABLE IF NOT EXISTS samples (
+  id bigint default vavishka_seq.nextval primary key,
+  title char(128),
+  description varchar(256) NOT NULL,
+  imageSrc varchar(256)
 );

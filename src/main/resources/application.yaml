@@ -28,8 +28,15 @@ spring:
 storage:
   location: c:/upload-dir
   groups:
+    sample:
+      folder: sample
+      width: 640
+      height: 640
+      sql: insert into header (path, orders) values (?, ?)
     header:
       folder: header
+      width: 640
+      height: 640
       sql: insert into header (path, orders) values (?, ?)
 app:
   mode:
@@ -43,3 +50,8 @@ static-resource:
       - classpath:/public/
       - classpath:/static/
       - file:///c:/upload-dir/
+sql:
+  groups:
+    sample:
+      insert: insert into samples (title, description, imageSrc) values(?, ?, ?)
+      select: select title, description, imageSrc from samples

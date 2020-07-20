@@ -8,41 +8,57 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <style type="text/css">
-    .picture-box-center-control-container {
+    .picture-upload-center-control-container {
         margin-top: 0px;
         margin-bottom: 0px;
         height: 100%;
+    }
+    .picture-upload-plus {
+        cursor: pointer;
+        color: green;
+        opacity: 0.8;
+    }
+    .picture-upload-plus:hover {
+        background-color: #c69500;
+        padding: 4px;
+        border-radius: 6px;
     }
 </style>
 
 
 <script >
-    var pictureBox = Vue.component('picture-box', {
+    var pictureUpload = Vue.component('picture-upload', {
         template: `
             <div class="card-image">
-                <figure class="image is-4by3">
-                    <img v-bind:src="images[idx]" alt="Placeholder image" v-if="images">
-                    <img v-bind:src="unknownURL" alt="Placeholder image" v-if="!images">
-                </figure>
-                <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
-                    <div class="column is-full" style="height: 20%;"></div>
-                        <div class="column is-full is-info" style="height: 60%;">
-                        <div class="columns is-mobile is-vcentered is-multiline picture-box-center-control-container"
-                                v-if="images && images.length > 1" style="margin-top: auto; margin-bottom: auto;">
-                            <div class="column is-narrow">
-                                <button v-on:click="next" class="button is-white fa fa-angle-right" style="opacity: 0.4;"></button>
-                            </div>
-                            <div class="column">&nbsp;</div>
-                            <div class="column is-narrow">
-                                <button v-on:click="prev" class="button is-white is-transparent fa fa-angle-left" style="opacity: 0.4;"></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column is-full is-info " style="height: 20%;"></div>
+                    <figure class="image is-4by3">
+                        <img v-if="item.image" :src="item.image"/>
+                        <img v-if="!item.image" :src="unknownURL"/>
+                    </figure>
+                    <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
+<div class="column is-full " style="height: 20%;">
+    <div class="columns" style="padding: 0px; margin: 0px;">
+        <div class="column" style="padding: 0px; margin: 0px;">
+            <input type="file" id="file" ref="file" @change="handleFileUpload($event)"
+                class="is-white fa fa-angle-right" style="display: none" />
+            <i v-on:click="selectImage" class="fa fa-plus picture-upload-plus" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
+<div class="column is-full is-info" style="height: 60%;">
+<div class="columns is-mobile is-vcentered is-multiline picture-upload-center-control-container"
+    v-if="images && images.length > 1" style="margin-top: auto; margin-bottom: auto;">
+    <div class="column is-narrow"><button v-on:click="next" class="button is-white fa fa-angle-right" ></button></div>
+    <div class="column">&nbsp;</div>
+    <div class="column is-narrow"><button v-on:click="prev" class="button is-white is-transparent fa fa-angle-left"></button></div>
+</div>
+</div>
+<div class="column is-full is-info " style="height: 20%;"></div>
                 </div>
-            </div>
+</div>
 `,
         props: {
+            formName: String,
+            propertyName: String,
             isUpload: true,
             images: {
                 type: Array
@@ -57,13 +73,39 @@
         },
         data: function() {
             return {
-                idx: 0
+                idx: 0,
+                item: {
+                    image: false,
+                },
+                file: '',
+                sharedState: store.state
             }
         },
         components: {
 
         },
         methods: {
+            selectImage() {
+                this.$refs.file.click()
+            },
+            handleFileUpload: function(event) {
+                // console.log(event.target.files[0]);
+                // console.log(this.$refs.file.files[0]);
+                this.file = this.$refs.file.files[0];
+                this.createImage(this.file);
+            },
+            createImage(file) {
+                var image = new Image();
+                var reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.item.image = e.target.result;
+                    if(this.formName) {
+                        store.setToForms(this.formName, this.propertyName, this.item.image);
+                    }
+                };
+                reader.readAsDataURL(file);
+            },
             next: function () {
                 this.idx++;
                 if(this.idx >= this.images.length)

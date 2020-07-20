@@ -13,6 +13,8 @@ public interface StorageService {
 
     void store(MultipartFile file, String group, Object[] sqlParams, Integer width, Integer height);
 
+    String store(String file, String group);
+
     Stream<Path> loadAll();
 
     Path load(String filename);

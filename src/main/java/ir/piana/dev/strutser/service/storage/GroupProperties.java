@@ -13,5 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @AllArgsConstructor
 public class GroupProperties {
     private String folder;
+    private int width;
+    private int height;
     private String sql;
 }
