@@ -21,8 +21,9 @@
         template: `
             <div class="card-image">
                 <figure class="image is-4by3">
+                    <img v-bind:src="image" alt="Placeholder image" v-if="image">
                     <img v-bind:src="images[idx]" alt="Placeholder image" v-if="images">
-                    <img v-bind:src="unknownURL" alt="Placeholder image" v-if="!images">
+                    <img v-bind:src="unknownURL" alt="Placeholder image" v-if="!images && !image">
                 </figure>
                 <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
                     <div class="column is-full" style="height: 20%;"></div>
@@ -46,6 +47,9 @@
             isUpload: true,
             images: {
                 type: Array
+            },
+            image: {
+                type: String
             },
             title: {
                 type: String

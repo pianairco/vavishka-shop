@@ -19,35 +19,10 @@
         <%
             }
         %>
-        <div v-for="s in samples" class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="s['IMAGESRC']"
-                                   :description="s['DESCRIPTION']"
-                                   :title="s['TITLE']"></pictorial-sample-item>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
+        <div v-for="d in samples" class="column is-full-mobile is-one-quarter-desktop">
+            <pictorial-sample-item :link="'/bulma/sample'" :image="d['IMAGESRC']"
+                                   :description="d['DESCRIPTION']"
+                                   :title="d['TITLE']"></pictorial-sample-item>
         </div>
         <div class="column is-full-mobile is-one-quarter-desktop">
             <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"

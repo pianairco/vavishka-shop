@@ -15,7 +15,7 @@
     var pictorialSampleItem = Vue.component('pictorial-sample-item', {
         template: `
             <div class="card">
-                <picture-box :images="images"></picture-box>
+                <picture-box :image="image"></picture-box>
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
@@ -40,6 +40,9 @@
             },
             images: {
                 type: Array
+            },
+            image: {
+                type: String
             },
             caption: {
                 type: String

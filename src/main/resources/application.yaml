@@ -50,6 +50,8 @@ static-resource:
       - classpath:/public/
       - classpath:/static/
       - file:///c:/upload-dir/
+    '[/bulma]':
+      - file:///c:/upload-dir/
 sql:
   groups:
     sample:
