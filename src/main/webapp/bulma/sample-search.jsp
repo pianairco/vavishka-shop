@@ -56,8 +56,8 @@
                 console.log(JSON.stringify(form));
                 axios.post('/sample/add', form, { headers: { 'file-group': 'sample' } })
                     .then((response) => {
-                        this.items = response.data;
-                        this.render = true;
+                        console.log(response.data);
+                        this.samples.push(response.data);
                     })
                     .catch((err) => { this.message = err; });
             }
