@@ -23,7 +23,7 @@
                         </div>
                     </div>
 
-                    <div class="content">
+                    <div class="content" style="overflow-x: hidden; overflow-y: auto; height: 72px;">
                         {{description}}
                     </div>
                 </div>

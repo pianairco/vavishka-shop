@@ -26,7 +26,7 @@
         </div>
         <div class="column is-full-mobile is-one-quarter-desktop">
             <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
+                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
                                    :title="'hello'"></pictorial-sample-item>
         </div>
     </div>
