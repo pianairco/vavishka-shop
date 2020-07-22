@@ -19,7 +19,8 @@
 <script >
     var pictureBox = Vue.component('picture-box', {
         template: `
-            <div class="card-image">
+
+                <div>
                 <figure class="image is-4by3">
                     <img v-bind:src="image" alt="Placeholder image" v-if="image">
                     <img v-bind:src="images[idx]" alt="Placeholder image" v-if="images">
@@ -40,6 +41,7 @@
                         </div>
                     </div>
                     <div class="column is-full is-info " style="height: 20%;"></div>
+                </div>
                 </div>
             </div>
 `,

@@ -12,6 +12,20 @@
 <%--<script src="/js/vue/vue.js"></script>--%>
 
 <style>
+    .sample-item-overlay {
+        z-index: 10;
+    }
+
+    .sample-item-overlay-button {
+        color: #c69500;
+        cursor: pointer;
+    }
+    .sample-item-overlay-button:hover {
+        background-color: #c2e0f5;
+        padding: 4px;
+        border-radius: 3px;
+    }
+
     ::-webkit-scrollbar {
         width: 12px;
     }
@@ -31,7 +45,20 @@
     var pictorialSampleItem = Vue.component('pictorial-sample-item', {
         template: `
             <div class="card">
+<div class="card-image">
                 <picture-box :image="image"></picture-box>
+<div class="columns is-mobile is-vcentered is-multiline is-overlay sample-item-overlay" style="margin: 0px;">
+<div class="column is-full " style="height: 20%;">
+    <div class="columns" style="padding: 0px; margin: 0px;">
+        <div class="column" style="padding: 0px; margin: 0px;">
+            <span><i class="fa fa-edit sample-item-overlay-button" aria-hidden="true"></i></span>
+            <span><i class="fa fa-trash sample-item-overlay-button" aria-hidden="true"></i></span>
+        </div>
+    </div>
+</div>
+<div class="column is-full " style="height: 80%;">&nbsp;</div>
+</div>
+</div>
                 <div class="card-content">
                     <div class="media">
                         <div class="media-content">
