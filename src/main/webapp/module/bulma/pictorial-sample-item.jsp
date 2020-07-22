@@ -51,8 +51,8 @@
 <div class="column is-full " style="height: 20%;">
     <div class="columns" style="padding: 0px; margin: 0px;">
         <div class="column" style="padding: 0px; margin: 0px;">
-            <span><i class="fa fa-edit sample-item-overlay-button" aria-hidden="true"></i></span>
-            <span><i class="fa fa-trash sample-item-overlay-button" aria-hidden="true"></i></span>
+            <span><i class="fa fa-edit sample-item-overlay-button" v-on:click="editClick" aria-hidden="true"></i></span>
+            <span><i class="fa fa-trash sample-item-overlay-button" v-on:click="deleteClick" aria-hidden="true"></i></span>
         </div>
     </div>
 </div>
@@ -109,6 +109,12 @@
             pictureBox
         },
         methods: {
+            editClick: function () {
+              console.log("edit");
+            },
+            deleteClick: function () {
+                console.log("delete");
+            }
         },
         computed: {
             defaultCaption() {
