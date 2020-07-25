@@ -8,7 +8,10 @@
     var pictorialSampleItemCreator = Vue.component('pictorial-sample-item-creator', {
         template: `
             <div class="card">
-                <picture-upload :form-name="formName" :propertyName="propertyName" ></picture-upload>
+                <picture-upload v-if="!editedItem"
+                    :form-name="formName" :propertyName="propertyName" ></picture-upload>
+                <picture-upload v-if="editedItem"
+                    :form-name="formName" :editedImageSrc="editedItem.IMAGESRC" :propertyName="propertyName" ></picture-upload>
                 <div class="card-content">
                     <div class="media" style="padding-top: 15px;">
                         <div class="media-content">
@@ -25,13 +28,19 @@
                     </div>
                 </div>
                 <footer class="card-footer">
-                    <button class="card-footer-item button is-white" v-on:click="addClick">
+                    <button v-if="!editedItem" class="card-footer-item button is-white" v-on:click="addClick">
                         افزودن
+                    </button>
+                    <button v-if="editedItem" class="card-footer-item button is-white" v-on:click="editClick">
+                        تغییر
                     </button>
                 </footer>
             </div>
 `,
         props: {
+            editedItem: {
+                type: Object
+            },
             formName: {
                 type: String
             },
@@ -52,11 +61,12 @@
             return {
                 title: '',
                 description: '',
+                imageSrc: '',
                 sharedState: store.state
             }
         },
         components: {
-            pictureBox
+            pictureUpload
         },
         methods: {
             addClick: function () {
@@ -66,6 +76,24 @@
                 store.setToForms(this.formName, "title", this.title);
                 store.setToForms(this.formName, "description", this.description);
                 this.$emit("add-item", this.sharedState.forms[this.formName]);
+            },
+            editClick: function () {
+                store.setToForms(this.formName, "id", this.editedItem.ID);
+                store.setToForms(this.formName, "title", this.title);
+                store.setToForms(this.formName, "description", this.description);
+                store.setToForms(this.formName, "imageSrc", this.imageSrc);
+                this.$emit("edit-item", this.sharedState.forms[this.formName]);
+            }
+        },
+        mounted: function() {
+            console.log(JSON.stringify(this.editedItem))
+            if (this.editedItem) {
+                this.imageSrc = this.editedItem.IMAGESRC;
+                this.title = this.editedItem.TITLE;
+                this.description = this.editedItem.DESCRIPTION;
+            } else {
+                this.title = '';
+                this.description = '';
             }
         },
         computed: {

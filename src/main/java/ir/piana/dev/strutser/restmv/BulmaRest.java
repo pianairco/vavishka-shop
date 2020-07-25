@@ -2,6 +2,7 @@ package ir.piana.dev.strutser.restmv;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import ir.piana.dev.strutser.service.sql.SqlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,7 @@ public class BulmaRest {
     public ModelAndView getSampleSearchPage(HttpServletRequest request) throws JsonProcessingException {
         List<Map<String, Object>> sample = sqlService.list("sample");
         Map<String, Object> model = new LinkedHashMap<>();
+        mapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
         model.put("sample", mapper.writeValueAsString(sample));
         return new ModelAndView("bulma.sampleSearchPage", model);
     }

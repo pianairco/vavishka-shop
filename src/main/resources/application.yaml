@@ -55,5 +55,7 @@ static-resource:
 sql:
   groups:
     sample:
-      insert: insert into samples (title, description, imageSrc) values(?, ?, ?)
-      select: select title, description, imageSrc from samples
+      insert: insert into samples (id, title, description, image_src) values(?, ?, ?, ?)
+      update: update samples set title = ?, description = ?, image_src = ? where id = ?
+      select: select id, title, description, image_src from samples
+      delete: delete from samples where id = ?

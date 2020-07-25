@@ -35,12 +35,38 @@ public class SampleItemRest {
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group){
         String imageSrc = storageService.store((String) sampleItem.get("image"), group);
-        sqlService.update(group,
+//        sqlService.update(group,
+//                new Object[]{sampleItem.get("title"), sampleItem.get("description"), imageSrc});
+        long id = sqlService.insert(group, "vavishka_seq",
                 new Object[]{sampleItem.get("title"), sampleItem.get("description"), imageSrc});
         Map map = new LinkedHashMap();
-        map.put("TITLE", (String)sampleItem.get("title"));
-        map.put("DESCRIPTION", (String)sampleItem.get("description"));
-        map.put("IMAGESRC", imageSrc);
+        map.put("id", id);
+        map.put("title", (String)sampleItem.get("title"));
+        map.put("description", (String)sampleItem.get("description"));
+        map.put("imageSrc", imageSrc);
+        return ResponseEntity.ok(map);
+    }
+
+    @PostMapping(path = "sample/edit", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity editItem(
+            @RequestBody Map<String, Object> sampleItem,
+            @RequestHeader("file-group") String group){
+        String imageSrc = null;
+        if(sampleItem.get("image") != null) {
+            imageSrc = storageService.store((String) sampleItem.get("image"), group);
+        } else {
+            imageSrc = (String)sampleItem.get("imageSrc");
+        }
+
+        sqlService.update(group,
+                new Object[]{sampleItem.get("title"), sampleItem.get("description"), imageSrc, sampleItem.get("id")});
+        Map map = new LinkedHashMap();
+        map.put("id", sampleItem.get("id"));
+        map.put("title", (String)sampleItem.get("title"));
+        map.put("description", (String)sampleItem.get("description"));
+        map.put("imageSrc", imageSrc);
         return ResponseEntity.ok(map);
     }
 }

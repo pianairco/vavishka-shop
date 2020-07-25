@@ -78,6 +78,9 @@
             </div>
 `,
         props: {
+            id: {
+                type: Number
+            },
             link: {
                 type: String
             },
@@ -111,9 +114,11 @@
         methods: {
             editClick: function () {
               console.log("edit");
+                this.$emit("edit-item", this.id);
             },
             deleteClick: function () {
                 console.log("delete");
+                this.$emit("delete-item", this.id);
             }
         },
         computed: {

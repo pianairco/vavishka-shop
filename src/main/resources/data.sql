@@ -32,5 +32,5 @@ CREATE TABLE IF NOT EXISTS samples (
   id bigint default vavishka_seq.nextval primary key,
   title char(128),
   description varchar(256) NOT NULL,
-  imageSrc varchar(256)
+  image_src varchar(256)
 );
