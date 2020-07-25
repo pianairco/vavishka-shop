@@ -1,6 +1,8 @@
 package ir.piana.dev.strutser;
 
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import ir.piana.dev.strutser.action.common.FormManagerProvider;
 import ir.piana.dev.strutser.action.common.SQLQueryManagerProvider;
 import ir.piana.dev.strutser.cfg.StaticResourceProperties;
@@ -8,6 +10,8 @@ import ir.piana.dev.strutser.rest.image.ImageLoaderProperties;
 import ir.piana.dev.strutser.service.sql.SqlProperties;
 import ir.piana.dev.strutser.service.storage.StorageProperties;
 import ir.piana.dev.strutser.service.storage.StorageService;
+import ir.piana.dev.strutser.util.LowerCaseKeyDeserializer;
+import ir.piana.dev.strutser.util.LowerCaseKeySerializer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,7 +39,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class StrutserApplication /*implements CommandLineRunner*/ {
 	@Bean("objectMapper")
 	public ObjectMapper getObjectMapper() {
-		return new ObjectMapper();
+		ObjectMapper objectMapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule("LowerCaseKeyDeserializer",
+				new Version(1,0,0,null));
+		module.addKeyDeserializer(Object.class, new LowerCaseKeyDeserializer());
+		module.addKeySerializer(Object.class, new LowerCaseKeySerializer());
+		objectMapper.registerModule(module);
+		return objectMapper;
 	}
 
 	@Bean

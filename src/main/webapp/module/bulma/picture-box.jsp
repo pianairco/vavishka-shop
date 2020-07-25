@@ -20,7 +20,7 @@
     var pictureBox = Vue.component('picture-box', {
         template: `
 
-                <div>
+            <div class="card-image">
                 <figure class="image is-4by3">
                     <img v-bind:src="image" alt="Placeholder image" v-if="image">
                     <img v-bind:src="images[idx]" alt="Placeholder image" v-if="images">
@@ -28,7 +28,7 @@
                 </figure>
                 <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
                     <div class="column is-full" style="height: 20%;"></div>
-                        <div class="column is-full is-info" style="height: 60%;">
+                    <div class="column is-full is-info" style="height: 60%;">
                         <div class="columns is-mobile is-vcentered is-multiline picture-box-center-control-container"
                                 v-if="images && images.length > 1" style="margin-top: auto; margin-bottom: auto;">
                             <div class="column is-narrow">
@@ -41,7 +41,6 @@
                         </div>
                     </div>
                     <div class="column is-full is-info " style="height: 20%;"></div>
-                </div>
                 </div>
             </div>
 `,

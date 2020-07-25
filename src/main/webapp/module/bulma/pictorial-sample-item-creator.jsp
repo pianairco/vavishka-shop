@@ -9,9 +9,11 @@
         template: `
             <div class="card">
                 <picture-upload v-if="!editedItem"
+                    ref="picUpload"
                     :form-name="formName" :propertyName="propertyName" ></picture-upload>
                 <picture-upload v-if="editedItem"
-                    :form-name="formName" :editedImageSrc="editedItem.IMAGESRC" :propertyName="propertyName" ></picture-upload>
+                    ref="picUpload"
+                    :form-name="formName" :editedImageSrc="editedItem.imageSrc" :propertyName="propertyName" ></picture-upload>
                 <div class="card-content">
                     <div class="media" style="padding-top: 15px;">
                         <div class="media-content">
@@ -69,6 +71,12 @@
             pictureUpload
         },
         methods: {
+            reset: function () {
+                this.title = '';
+                this.description = '';
+                this.imageSrc = '';
+                this.$refs.picUpload.reset();
+            },
             addClick: function () {
                 // console.log(JSON.stringify(this.sharedState.forms[this.formName]))
                 console.log(this.title)
@@ -76,21 +84,23 @@
                 store.setToForms(this.formName, "title", this.title);
                 store.setToForms(this.formName, "description", this.description);
                 this.$emit("add-item", this.sharedState.forms[this.formName]);
+                this.reset();
             },
             editClick: function () {
-                store.setToForms(this.formName, "id", this.editedItem.ID);
+                store.setToForms(this.formName, "id", this.editedItem.id);
                 store.setToForms(this.formName, "title", this.title);
                 store.setToForms(this.formName, "description", this.description);
                 store.setToForms(this.formName, "imageSrc", this.imageSrc);
                 this.$emit("edit-item", this.sharedState.forms[this.formName]);
+                this.reset();
             }
         },
         mounted: function() {
             console.log(JSON.stringify(this.editedItem))
             if (this.editedItem) {
-                this.imageSrc = this.editedItem.IMAGESRC;
-                this.title = this.editedItem.TITLE;
-                this.description = this.editedItem.DESCRIPTION;
+                this.imageSrc = this.editedItem.imageSrc;
+                this.title = this.editedItem.title;
+                this.description = this.editedItem.description;
             } else {
                 this.title = '';
                 this.description = '';

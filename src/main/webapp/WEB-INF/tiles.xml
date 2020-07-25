@@ -22,26 +22,31 @@
     <!-- Home Page  -->
     <definition name="bulma.galleryPage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="header" value="" />
         <put-attribute name="body" value="/bulma/gallery.jsp" />
     </definition>
 
     <definition name="bulma.adminSamplePage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="header" value="" />
         <put-attribute name="body" value="/bulma/admin/admin-sample.jsp" />
     </definition>
 
     <definition name="bulma.samplePage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="header" value="" />
         <put-attribute name="body" value="/bulma/sample.jsp" />
     </definition>
 
     <definition name="bulma.shopPage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="header" value="" />
         <put-attribute name="body" value="/bulma/shop.jsp" />
     </definition>
 
     <definition name="bulma.sampleSearchPage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
+        <put-attribute name="header" value="" />
         <put-attribute name="body" value="/bulma/sample-search.jsp" />
     </definition>
 

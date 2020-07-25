@@ -69,4 +69,14 @@ public class SampleItemRest {
         map.put("imageSrc", imageSrc);
         return ResponseEntity.ok(map);
     }
+
+    @PostMapping(path = "sample/delete", consumes = MediaType.APPLICATION_JSON_VALUE,
+                produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity deleteItem(
+            @RequestBody Map<String, Object> sampleItem,
+            @RequestHeader("file-group") String group) {
+        sqlService.delete(group, new Object[]{sampleItem.get("id")});
+        return ResponseEntity.ok().build();
+    }
 }

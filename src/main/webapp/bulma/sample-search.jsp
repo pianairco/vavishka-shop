@@ -28,19 +28,14 @@
                                    :id="d['id']"
                                    :image="d['imageSrc']"
                                    :description="d['description']"
-                                   :title="d['TITLE']"></pictorial-sample-item>
-            <pictorial-sample-item-creator v-if="d['ID'] == editedId"
+                                   :title="d['title']"></pictorial-sample-item>
+            <pictorial-sample-item-creator v-if="d['id'] == editedId"
                                            v-on:add-item="addItem"
                                            v-on:edit-item="editItem"
                                            :edited-item="d"
                                            :form-name="'uploader1'"
                                            :property-name="'image'">
             </pictorial-sample-item-creator>
-        </div>
-        <div class="column is-full-mobile is-one-quarter-desktop">
-            <pictorial-sample-item :link="'/bulma/sample'" :images="images.slice(0, 1)"
-                                   :description="'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.'"
-                                   :title="'hello'"></pictorial-sample-item>
         </div>
     </div>
 </div>
@@ -93,6 +88,14 @@
             },
             deleteItemClick(id) {
                 console.log(id);
+                axios.post('/sample/delete', { "id": id }, { headers: { 'file-group': 'sample' } })
+                    .then((response) => {
+                        console.log(response.data);
+                        let index = this.samples.findIndex(item => item.id === response.data.id);
+                        console.log(index);
+                        this.samples.splice(index, 1);
+                    })
+                    .catch((err) => { this.message = err; });
             }
         },
         components: {

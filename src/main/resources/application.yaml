@@ -25,6 +25,10 @@ spring:
     cache.period: 0
   template:
     cache: false
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 storage:
   location: c:/upload-dir
   groups:

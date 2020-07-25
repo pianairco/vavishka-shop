@@ -91,8 +91,11 @@
         mounted: function () {
         },
         methods: {
+            reset: function () {
+                this.item.image = false;
+            },
             selectImage() {
-                this.$refs.file.click()
+                this.$refs.file.click();
             },
             handleFileUpload: function(event) {
                 // console.log(event.target.files[0]);
