@@ -43,7 +43,7 @@
         </div>
         <div class="media-right">
             <span class="icon is-medium" style="cursor: pointer">
-                <i class="fa fa-2x fa-chevron-circle-left"></i>
+                <i class="fa fa-2x fa-chevron-circle-left" v-on:click="sessionSelected"></i>
             </span>
         </div>
     </article>`,
@@ -73,6 +73,10 @@
             pictureBox
         },
         methods: {
+            sessionSelected: function() {
+                console.log("session selected!", this.id);
+                this.$emit("session-selected", this.id);
+            }
         }
     });
 </script>

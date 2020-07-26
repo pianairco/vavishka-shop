@@ -12,6 +12,7 @@
                 <ul class="menu-list" <%--style=" overflow-y: auto; display: flex; flex-direction: column; max-height: 800px;"--%>>
                     <li v-for="session in sessions">
                         <pictorial-menu-item
+                                v-on:session-selected="sessionSelected"
                                 v-if="session['id'] != editedId"
                                 :id="session['id']"
                                 :image="session['iconSrc']"
@@ -89,6 +90,9 @@
                     this.sessions.push(response.data);
                 })
                 .catch((err) => { this.message = err; });
+            },
+            sessionSelected: function (id) {
+                console.log("session selected!", id);
             }
         },
         components: {
