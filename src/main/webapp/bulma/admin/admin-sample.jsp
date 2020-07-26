@@ -1,7 +1,9 @@
 <%@ page import="ir.piana.dev.strutser.util.JspUtil" %>
 <%@ page language="java" contentType="text/html;charset=UTF-8" %>
+<jsp:include page="/module/bulma/picture-box.jsp" />
 <jsp:include page="/module/bulma/pictorial-menu-item.jsp" />
 <jsp:include page="/module/bulma/pictorial-menu-item-creator.jsp" />
+<jsp:include page="/module/bulma/column-picture-upload.jsp" />
 
 <div class="container" id="bulma-sample-page">
     <div class="columns is-mobile is-multiline">
@@ -14,6 +16,7 @@
                         <pictorial-menu-item
                                 v-on:session-selected="sessionSelected"
                                 v-if="session['id'] != editedId"
+                                :active-id="activeId"
                                 :id="session['id']"
                                 :image="session['iconSrc']"
                                 :description="session['description']"
@@ -30,16 +33,15 @@
                     </figure>
                 </div>
                 <div class="card-content">
-                    <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-48x48">
-                                <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                            </figure>
-                        </div>
-                        <div class="media-content">
-                            <p class="title is-4">John Smith</p>
-                            <p class="subtitle is-6">@johnsmith</p>
-                        </div>
+                    <div class="columns is-mobile is-multiline" style="margin: 0px;">
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload></column-picture-upload>
                     </div>
 
                     <div class="content">
@@ -76,7 +78,8 @@
             return {
                 sample: ${sample},
                 sessions: ${sessions},
-                editedId: 0
+                editedId: 0,
+                activeId: 0
             }
         },
         methods: {
@@ -93,10 +96,11 @@
             },
             sessionSelected: function (id) {
                 console.log("session selected!", id);
+                this.activeId = id;
             }
         },
         components: {
-            pictorialMenuItem, pictorialMenuItemCreator
+            columnPictureUpload, pictureBox, pictorialMenuItem, pictorialMenuItemCreator
         },
     });
 </script>

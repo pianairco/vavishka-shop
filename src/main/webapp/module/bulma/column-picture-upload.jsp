@@ -7,92 +7,59 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="/module/bulma/picture-box.jsp" />
-<%--<script src="/js/vue/vue.js"></script>--%>
-
-<style>
-    .media.active {
-        border: 2px solid black;
+<style type="text/css">
+    .picture-upload-center-control-container {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        height: 100%;
+    }
+    .picture-upload-plus {
+        cursor: pointer;
+        color: green;
+        opacity: 0.8;
+    }
+    .picture-upload-plus:hover {
+        background-color: #c69500;
+        padding: 4px;
         border-radius: 6px;
-        padding: 12px;
-        background-color: aliceblue;
-    }
-
-    button.icon {
-        background-color: inherit;
-        border: none;
-    }
-
-    button.icon:hover {
-        background-color: #cfd7d4;
-        border: 1px solid black;
-        border-radius: 3px;
-    }
-
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
     }
 </style>
 
+
 <script >
-    var pictorialMenuItem = Vue.component('pictorial-menu-item', {
+    var columnPictureUpload = Vue.component('column-picture-upload', {
         template: `
-    <article class="media" v-bind:class="{ active: activeId == id }">
-        <figure class="media-left">
-            <p class="image is-64x64">
-                <picture-box :image="image"></picture-box>
-            </p>
-        </figure>
-        <div class="media-content">
-            <div class="content">
-                <p>
-                    <strong>{{title}}</strong>
-                    <br>
-                    {{description}}
-                </p>
+<div class="card">
+    <div class="card-image">
+        <div class="card-image">
+            <figure class="image is-64x64">
+                <img v-if="!item.image" :src="unknownURL" >
+                <img v-if="item.image" :src="item.image" >
+            </figure>
+        </div>
+        <div class="columns is-overlay is-vcentered is-multiline is-mobile" style="margin: 0px;">
+            <div class="column is-full" style="margin: 0px; padding: 0px;">
+                <span class="image is-64x64 ">
+                    <img src="/img/plus.png" style="opacity: 0.4;" v-on:click="selectImage">
+                </span>
             </div>
-            <!--<nav class="level is-mobile">
-                <div class="level-left">
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                    </a>
-                </div>
-            </nav>-->
+            <input type="file" id="file" ref="file" @change="handleFileUpload($event)"
+                        class="is-white fa fa-angle-right" style="display: none" />
         </div>
-        <div class="media-right">
-            <button class="icon is-medium" style="cursor: pointer;">
-                <i class="fa fa-2x fa-chevron-circle-left" v-on:click="sessionSelected"></i>
-            </button>
-        </div>
-    </article>`,
+    </div>
+</div>
+`,
         props: {
-            activeId: 0,
-            id: {
-                type: Number
+            formName: String,
+            propertyName: String,
+            isUpload: true,
+            editedImageSrc: {
+              type: String
             },
-            image: {
-                type: String
+            images: {
+                type: Array
             },
             title: {
-                type: String
-            },
-            description: {
                 type: String
             },
             unknownURL: {
@@ -102,15 +69,53 @@
         },
         data: function() {
             return {
+                idx: 0,
+                item: {
+                    image: false,
+                },
+                file: '',
+                sharedState: store.state
             }
         },
         components: {
-            pictureBox
+
+        },
+        mounted: function () {
         },
         methods: {
-            sessionSelected: function() {
-                console.log("session selected!", this.id);
-                this.$emit("session-selected", this.id);
+            reset: function () {
+                this.item.image = false;
+            },
+            selectImage() {
+                this.$refs.file.click();
+            },
+            handleFileUpload: function(event) {
+                // console.log(event.target.files[0]);
+                // console.log(this.$refs.file.files[0]);
+                this.file = this.$refs.file.files[0];
+                this.createImage(this.file);
+            },
+            createImage(file) {
+                var image = new Image();
+                var reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.item.image = e.target.result;
+                    if(this.formName) {
+                        store.setToForms(this.formName, this.propertyName, this.item.image);
+                    }
+                };
+                reader.readAsDataURL(file);
+            },
+            next: function () {
+                this.idx++;
+                if(this.idx >= this.images.length)
+                    this.idx = 0;
+            },
+            prev: function () {
+                this.idx--;
+                if(this.idx < 0)
+                    this.idx = this.images.length - 1;
             }
         }
     });
