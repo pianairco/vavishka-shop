@@ -16,4 +16,5 @@ public class SqlProperties {
      * Folder location for storing files
      */
     private Map<String, SqlGroupProperties> groups;
+    private Map<String, String> map;
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,12 +51,20 @@ public class BulmaRest {
     }
 
     @GetMapping(path = "/admin/sample")
-    public ModelAndView getAdminSamplePage(HttpServletRequest request) {
-        return new ModelAndView("bulma.adminSamplePage");
+    public ModelAndView getAdminSamplePage(@RequestParam("id") long id,
+                                           HttpServletRequest request)
+            throws JsonProcessingException {
+        List<Map<String, Object>> list = sqlService.list("sample-session", new Object[]{id});
+        Map<String, Object> model = new LinkedHashMap<>();
+        model.put("sessions", mapper.writeValueAsString(list));
+        Map<String, Object> sample = sqlService.select("get-sample-by-id", new Object[]{id});
+        model.put("sample", mapper.writeValueAsString(sample));
+        return new ModelAndView("bulma.adminSamplePage", model);
     }
 
     @GetMapping(path = "/sample-search")
-    public ModelAndView getSampleSearchPage(HttpServletRequest request) throws JsonProcessingException {
+    public ModelAndView getSampleSearchPage(HttpServletRequest request)
+            throws JsonProcessingException {
         List<Map<String, Object>> sample = sqlService.list("sample", null);
         Map<String, Object> model = new LinkedHashMap<>();
         model.put("sample", mapper.writeValueAsString(sample));

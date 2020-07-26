@@ -34,3 +34,22 @@ CREATE TABLE IF NOT EXISTS samples (
   description varchar(256) NOT NULL,
   image_src varchar(256)
 );
+
+CREATE TABLE IF NOT EXISTS samples_session (
+    id bigint default vavishka_seq.nextval primary key,
+    samples_id bigint,
+    title char(128),
+    description varchar(256),
+    detail varchar(4096) ,
+    icon_src varchar(256),
+    orders int,
+    image_src1 varchar(256),
+    image_src2 varchar(256),
+    image_src3 varchar(256),
+    image_src4 varchar(256),
+    image_src5 varchar(256),
+    image_src6 varchar(256),
+    image_src7 varchar(256),
+    image_src8 varchar(256),
+    CONSTRAINT FK_SESSION_TO_SAMPLES FOREIGN KEY ( samples_id ) REFERENCES samples( id )
+);

@@ -2,6 +2,7 @@ package ir.piana.dev.strutser.service.sql;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,14 @@ public class SqlService {
 
     public List<Map<String, Object>> list(String group, Object[] sqlParams) {
         return jdbcTemplate.queryForList(sqlProperties.getGroups().get(group).getSelect(), sqlParams);
+    }
+
+    public Map<String, Object> select(String queryName, Object[] sqlParams) {
+        try {
+            return jdbcTemplate.queryForMap(sqlProperties.getMap().get(queryName), sqlParams);
+        } catch (EmptyResultDataAccessException ex) {
+            return null;
+        }
     }
 
     public void delete(String group, Object[] sqlParams) {

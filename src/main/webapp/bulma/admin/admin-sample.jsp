@@ -1,21 +1,23 @@
+<%@ page import="ir.piana.dev.strutser.util.JspUtil" %>
 <%@ page language="java" contentType="text/html;charset=UTF-8" %>
 <jsp:include page="/module/bulma/pictorial-menu-item.jsp" />
+<jsp:include page="/module/bulma/pictorial-menu-item-creator.jsp" />
 
 <div class="container" id="bulma-sample-page">
     <div class="columns is-mobile is-multiline">
         <div class="column is-full-mobile is-one-quarter-desktop">
-            <a class="button is-primary is-block is-alt is-large" href="#">New Post</a>
+            <pictorial-menu-item-creator v-on:add-item="addItem" :form-name="'uploader1'" :icon-property-name="'icon'">
+            </pictorial-menu-item-creator>
             <aside class="menu">
                 <ul class="menu-list" <%--style=" overflow-y: auto; display: flex; flex-direction: column; max-height: 800px;"--%>>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
-                    <li><pictorial-menu-item></pictorial-menu-item></li>
+                    <li v-for="session in sessions">
+                        <pictorial-menu-item
+                                v-if="session['id'] != editedId"
+                                :id="session['id']"
+                                :image="session['iconSrc']"
+                                :description="session['description']"
+                                :title="session['title']"></pictorial-menu-item>
+                    </li>
                 </ul>
             </aside>
         </div>
@@ -65,16 +67,32 @@
 </div>
 
 <script>
+    <%=JspUtil.getStore("store")%>
+
     var app = new Vue({
         el: '#bulma-sample-page',
         data: function () {
             return {
+                sample: ${sample},
+                sessions: ${sessions},
+                editedId: 0
             }
         },
         methods: {
+            addItem: function (form) {
+                console.log(JSON.stringify(form))
+                form['samples_id'] = this.sample.id;
+                form['orders'] = this.sessions.length + 1;
+                axios.post('/sample/session/add', form, { headers: { 'file-group': 'sample-session' } })
+                    .then((response) => {
+                    console.log(response.data);
+                    this.sessions.push(response.data);
+                })
+                .catch((err) => { this.message = err; });
+            }
         },
         components: {
-            pictorialMenuItem
+            pictorialMenuItem, pictorialMenuItemCreator
         },
     });
 </script>

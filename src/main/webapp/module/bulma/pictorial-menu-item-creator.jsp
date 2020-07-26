@@ -7,57 +7,52 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="/module/bulma/picture-box.jsp" />
+<jsp:include page="/module/bulma/picture-upload.jsp" />
+
 <%--<script src="/js/vue/vue.js"></script>--%>
 
 <script >
-    var pictorialMenuItem = Vue.component('pictorial-menu-item', {
+    var pictorialMenuItemCreator = Vue.component('pictorial-menu-item-creator', {
         template: `
-    <article class="media">
-        <figure class="media-left">
-            <p class="image is-64x64">
-                <picture-box :image="image"></picture-box>
-            </p>
-        </figure>
-        <div class="media-content">
-            <div class="content">
-                <p>
-                    <strong>{{title}}</strong>
-                    <br>
-                    {{description}}
-                </p>
-            </div>
-            <!--<nav class="level is-mobile">
-                <div class="level-left">
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-reply"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-retweet"></i></span>
-                    </a>
-                    <a class="level-item">
-                        <span class="icon is-small"><i class="fas fa-heart"></i></span>
-                    </a>
+    <div class="card">
+                <picture-upload v-if="!editedItem"
+                    ref="picUpload"
+                    :form-name="formName" :propertyName="iconPropertyName" ></picture-upload>
+                <picture-upload v-if="editedItem"
+                    ref="picUpload"
+                    :form-name="formName" :editedImageSrc="editedItem.imageSrc" :propertyName="propertyName" ></picture-upload>
+                <div class="card-content">
+                    <div class="media" style="padding-top: 15px;">
+                        <div class="media-content">
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input is-primary" type="text" v-model="title" placeholder="عنوان">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <textarea class="textarea" placeholder="توضیحات" v-model="description" rows="2"></textarea>
+                    </div>
                 </div>
-            </nav>-->
-        </div>
-        <div class="media-right">
-            <span class="icon is-medium" style="cursor: pointer">
-                <i class="fa fa-2x fa-chevron-circle-left"></i>
-            </span>
-        </div>
-    </article>`,
+                <footer class="card-footer">
+                    <button v-if="!editedItem" class="card-footer-item button is-white" v-on:click="addClick">
+                        افزودن
+                    </button>
+                    <button v-if="editedItem" class="card-footer-item button is-white" v-on:click="editClick">
+                        تغییر
+                    </button>
+                </footer>
+            </div>`,
         props: {
-            id: {
-                type: Number
+            editedItem: {
+                type: Object
             },
-            image: {
+            formName: {
                 type: String
             },
-            title: {
-                type: String
-            },
-            description: {
+            iconPropertyName: {
                 type: String
             },
             unknownURL: {
@@ -67,12 +62,50 @@
         },
         data: function() {
             return {
+                title: '',
+                description: '',
+                iconSrc: '',
+                sharedState: store.state
             }
         },
         components: {
-            pictureBox
+            pictureUpload
         },
         methods: {
-        }
+            reset: function () {
+                this.title = '';
+                this.description = '';
+                this.imageSrc = '';
+                this.$refs.picUpload.reset();
+            },
+            addClick: function () {
+                // console.log(JSON.stringify(this.sharedState.forms[this.formName]))
+                console.log(this.title)
+                console.log(this.description)
+                store.setToForms(this.formName, "title", this.title);
+                store.setToForms(this.formName, "description", this.description);
+                this.$emit("add-item", this.sharedState.forms[this.formName]);
+                this.reset();
+            },
+            editClick: function () {
+                store.setToForms(this.formName, "id", this.editedItem.id);
+                store.setToForms(this.formName, "title", this.title);
+                store.setToForms(this.formName, "description", this.description);
+                store.setToForms(this.formName, "imageSrc", this.imageSrc);
+                this.$emit("edit-item", this.sharedState.forms[this.formName]);
+                this.reset();
+            }
+        },
+        mounted: function() {
+            console.log(JSON.stringify(this.editedItem))
+            if (this.editedItem) {
+                this.iconSrc = this.editedItem.imageSrc;
+                this.title = this.editedItem.title;
+                this.description = this.editedItem.description;
+            } else {
+                this.title = '';
+                this.description = '';
+            }
+        },
     });
 </script>
