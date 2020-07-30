@@ -19,9 +19,10 @@
         opacity: 0.8;
     }
     .picture-upload-plus:hover {
-        background-color: #c69500;
+        background-color: #f1eaff;
         padding: 4px;
         border-radius: 6px;
+        cursor: pointer !important;
     }
 </style>
 
@@ -29,7 +30,7 @@
 <script >
     var columnPictureUpload = Vue.component('column-picture-upload', {
         template: `
-<div class="card">
+<div class="card picture-upload-plus">
     <div class="card-image">
         <div class="card-image">
             <figure class="image is-64x64">
@@ -39,8 +40,9 @@
         </div>
         <div class="columns is-overlay is-vcentered is-multiline is-mobile" style="margin: 0px;">
             <div class="column is-full" style="margin: 0px; padding: 0px;">
-                <span class="image is-64x64 ">
-                    <img src="/img/plus.png" style="opacity: 0.4;" v-on:click="selectImage">
+                <span class="image is-64x64">
+                    <img v-if="!item.image" src="/img/plus.png" style="opacity: 0.4;" v-on:click="selectImage">
+                    <img v-if="item.image" src="/img/delete.png" style="opacity: 0.4;" v-on:click="deleteImage">
                 </span>
             </div>
             <input type="file" id="file" ref="file" @change="handleFileUpload($event)"
@@ -84,6 +86,9 @@
         },
         methods: {
             reset: function () {
+                this.item.image = false;
+            },
+            deleteImage() {
                 this.item.image = false;
             },
             selectImage() {
