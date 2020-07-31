@@ -1,5 +1,6 @@
 package ir.piana.dev.strutser.rest;
 
+import com.google.api.client.util.Maps;
 import ir.piana.dev.strutser.model.ResponseModel;
 import ir.piana.dev.strutser.service.storage.StorageFileNotFoundException;
 import ir.piana.dev.strutser.service.storage.StorageService;
@@ -16,14 +17,9 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Controller
@@ -59,47 +55,39 @@ public class FileUploadController {
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
         List<Object> objects = Arrays.asList(new Object[10]);
-        Integer width = null;
-        Integer height = null;
+        Map<String, String> replaceMap = new LinkedHashMap();
         Enumeration<String> headerNames = request.getHeaderNames();
         int max = 0;
         while (headerNames.hasMoreElements()) {
             String key = headerNames.nextElement();
-            if(key.equalsIgnoreCase("image_upload_force_width")) {
-                String widthStr = request.getHeader(key);
-                if(widthStr != null && !widthStr.isEmpty()) {
-                    width = Integer.valueOf(widthStr);
-                }
-            } else if(key.equalsIgnoreCase("image_upload_force_height")) {
-                String heightStr = request.getHeader(key);
-                if(heightStr != null && !heightStr.isEmpty()) {
-                    height = Integer.valueOf(heightStr);
-                }
-            } else if(key.startsWith("image_upload_sql_param_")) {
-                Integer order = Integer.parseInt(key.substring(23));
-                max = order > max ? order : max;
-                String header = request.getHeader(key);
-                if(header.startsWith("i:")) {
-                    objects.set(order - 1, Integer.parseInt(header.substring(2)));
-                } else if(header.startsWith("l:")) {
-                    objects.set(order - 1, Long.parseLong(header.substring(2)));
-                } else if(header.startsWith("f:")) {
-                    objects.set(order - 1, Float.parseFloat(header.substring(2)));
-                } else if(header.startsWith("d:")) {
-                    objects.set(order - 1, Double.parseDouble(header.substring(2)));
-                } else if(header.startsWith("b:")) {
-                    objects.set(order - 1, Boolean.valueOf(header.substring(2)));
-                } else {
-                    objects.set(order - 1, header);
-                }
-
-            }
+             if(key.startsWith("image_upload_sql_param_")) {
+                 Integer order = Integer.parseInt(key.substring(23));
+                 max = order > max ? order : max;
+                 String header = request.getHeader(key);
+                 if (header.startsWith("i:")) {
+                     objects.set(order - 1, Integer.parseInt(header.substring(2)));
+                 } else if (header.startsWith("l:")) {
+                     objects.set(order - 1, Long.parseLong(header.substring(2)));
+                 } else if (header.startsWith("f:")) {
+                     objects.set(order - 1, Float.parseFloat(header.substring(2)));
+                 } else if (header.startsWith("d:")) {
+                     objects.set(order - 1, Double.parseDouble(header.substring(2)));
+                 } else if (header.startsWith("b:")) {
+                     objects.set(order - 1, Boolean.valueOf(header.substring(2)));
+                 } else {
+                     objects.set(order - 1, header);
+                 }
+             } else if(key.startsWith("$") && key.endsWith("$")) {
+                 replaceMap.put(key, request.getHeader(key));
+             }
         }
-        storageService.store(file, group, objects.subList(0, max).toArray(), width, height);
+        String path = storageService.store(file, group, objects.subList(0, max).toArray(), replaceMap);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
 
-        return ResponseEntity.ok(ResponseModel.builder().code(0).data("success").build());
+        Map map = Maps.newHashMap();
+        map.put("path", path);
+        return ResponseEntity.ok(ResponseModel.builder().code(0).data(map).build());
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)

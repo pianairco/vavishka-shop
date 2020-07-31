@@ -55,6 +55,16 @@
             formName: String,
             propertyName: String,
             isUpload: true,
+            url: String,
+            sessionId: {
+                type: Number
+            },
+            imageUploadGroup: {
+                type: String
+            },
+            order: {
+                type: String
+            },
             editedImageSrc: {
               type: String
             },
@@ -106,11 +116,46 @@
 
                 reader.onload = (e) => {
                     this.item.image = e.target.result;
-                    if(this.formName) {
-                        store.setToForms(this.formName, this.propertyName, this.item.image);
-                    }
+                    this.submitFile();
+                    // if(this.formName) {
+                        // store.setToForms(this.formName, this.propertyName, this.item.image);
+                    // }
                 };
                 reader.readAsDataURL(file);
+            },
+            submitFile: function() {
+                // console.log(this.file);
+                // console.log(this.url);
+                // console.log(this.activity);
+                // console.log(this.action);
+                let formData = new FormData();
+                formData.append('file', this.file);
+                let headers = {
+                    'image_upload_group': this.imageUploadGroup,
+                    'image_upload_sql_param_1': 'i:' + this.sessionId,
+                    '$image_src$': 'image_src' + this.order,
+                    'Content-Type': 'multipart/form-data'
+                };
+
+                // headers["action"] = this.action;
+                // headers["activity"] = this.activity;
+
+                let self = this;
+                // this.state.isSpin = true;
+                axios.post(this.url, formData, {
+                    headers: headers
+                }).then((res) => {
+                    console.log('SUCCESS!!');
+                    console.log(res);
+                    console.log(res['data']['data']['path']);
+                    console.log(this.order);
+                    this.$emit("add-session-image", res['data']['data']['path'], this.order);
+                    // self.state.isSend = true;
+                    // self.state.isSpin = false;
+                }).catch(() => {
+                    console.log('FAILURE!!');
+                    // self.state.isSpin = false;
+                });
             },
             next: function () {
                 this.idx++;

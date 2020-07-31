@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Service
@@ -39,11 +40,14 @@ public class FileSystemStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file, String group, Object[] sqlParams) {
-        this.store(file, group, sqlParams, null, null);
+    public String store(MultipartFile file, String group, Object[] sqlParams, Map<String, String> replaceMap) {
+        Integer width = storageProperties.getGroups().get(group).getWidth();
+        Integer height = storageProperties.getGroups().get(group).getHeight();
+        return this.store(file, group, sqlParams, replaceMap, width, height);
     }
 
-    public void store(MultipartFile file, String group, Object[] sqlParams, Integer width, Integer height) {
+    public String store(MultipartFile file, String group, Object[] sqlParams, Map<String, String> replaceMap,
+                      Integer width, Integer height) {
         String format = file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String random = RandomStringUtils.randomAlphanumeric(64).concat(".").concat(format);
@@ -80,8 +84,12 @@ public class FileSystemStorageService implements StorageService {
                 Files.copy(is, this.rootLocation.resolve(filePath),
                             StandardCopyOption.REPLACE_EXISTING);
 
-                jdbcTemplate.update(storageProperties.getGroups().get(group).getSql(),
-                        ArrayUtils.addAll(new Object[]{filePath}, sqlParams));
+                String sql = storageProperties.getGroups().get(group).getSql();
+                for (String key : replaceMap.keySet()) {
+                    sql = sql.replace(key, replaceMap.get(key));
+                }
+                jdbcTemplate.update(sql, ArrayUtils.addAll(new Object[]{"/" + filePath}, sqlParams));
+                return "/" + filePath;
             }//jdbcTemplate.queryForList("select * from header where id in (select id from (SELECT max(id) id, orders FROM header GROUP BY orders))")
         }
         catch (IOException e) {

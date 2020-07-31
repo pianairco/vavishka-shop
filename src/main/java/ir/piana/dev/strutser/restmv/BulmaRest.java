@@ -16,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("bulma")
@@ -55,8 +53,13 @@ public class BulmaRest {
                                            HttpServletRequest request)
             throws JsonProcessingException {
         List<Map<String, Object>> list = sqlService.list("sample-session", new Object[]{id});
+        SortedMap<String, Map<String, Object>> map  = new TreeMap<>();
+        for (Map m : list) {
+            map.put(m.get("ID").toString(), m);
+        }
         Map<String, Object> model = new LinkedHashMap<>();
         model.put("sessions", mapper.writeValueAsString(list));
+        model.put("sessionsMap", mapper.writeValueAsString(map));
         Map<String, Object> sample = sqlService.select("get-sample-by-id", new Object[]{id});
         model.put("sample", mapper.writeValueAsString(sample));
         return new ModelAndView("bulma.adminSamplePage", model);

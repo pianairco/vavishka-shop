@@ -36,11 +36,11 @@ storage:
       folder: sample
       width: 640
       height: 640
-      sql: insert into header (path, orders) values (?, ?)
     sample-session:
       folder: sample-session
       width: 640
       height: 640
+      sql: update samples_session set $image_src$ = ? where id = ?
     header:
       folder: header
       width: 640

@@ -25,23 +25,56 @@
                 </ul>
             </aside>
         </div>
-        <div class="column is-full-mobile is-three-quarters-desktop">
+        <div v-if="activeId" class="column is-full-mobile is-three-quarters-desktop">
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                        <img v-if="Object.keys(sessionMap).length == 0" src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                        <img v-if="Object.keys(sessionMap).length > 0" :src="sessionMap['10']['imageSrc1']" alt="Placeholder image">
                     </figure>
                 </div>
                 <div class="card-content">
                     <div class="columns is-mobile is-multiline" style="margin: 0px;">
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
-                        <column-picture-upload></column-picture-upload>
+                        <column-picture-upload v-on:add-session-image="addSessionImage"
+                                               :url="'/images/image-upload'"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
+                        <column-picture-upload :url="'/images/image-upload'"
+                                               v-on:add-session-image="addSessionImage"
+                                               :image-upload-group="'sample-session'"
+                                               :order="'1'"
+                                               :session-id="activeId"></column-picture-upload>
                     </div>
 
                     <div class="content">
@@ -77,9 +110,12 @@
         data: function () {
             return {
                 sample: ${sample},
+                sessionMap: ${sessionsMap},
                 sessions: ${sessions},
                 editedId: 0,
-                activeId: 0
+                activeId: 0,
+                sessionImages: {
+                }
             }
         },
         methods: {
@@ -97,7 +133,23 @@
             sessionSelected: function (id) {
                 console.log("session selected!", id);
                 this.activeId = id;
+            },
+            addSessionImage: function (path, order) {
+                console.log("add new session image", path, order);
+                this.sessionImages[order + ''] = path;
+                console.log(this.sessionImages);
+                if(Object.keys(this.sessionImages).length > 0) {
+                    console.log('own')
+                } else {
+                    console.log('no own')
+                }
             }
+        },
+        mounted: function () {
+            console.log(Object.keys(this.sessionImages).length);
+            console.log(this.sessionImages);
+            console.log(this.sessionMap);
+            console.log(this.sessionMap['10']['imageSrc1']);
         },
         components: {
             columnPictureUpload, pictureBox, pictorialMenuItem, pictorialMenuItemCreator
