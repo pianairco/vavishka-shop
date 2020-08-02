@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class SampleSessionRest {
@@ -36,12 +35,15 @@ public class SampleSessionRest {
 //        sqlService.update(group,
 //                new Object[]{sampleItem.get("title"), sampleItem.get("description"), imageSrc});
         long id = sqlService.insert(group, "vavishka_seq",
-                new Object[]{sampleItem.get("samples_id"), sampleItem.get("title"), sampleItem.get("description"), iconSrc});
+                new Object[]{sampleItem.get("samples_id"), sampleItem.get("title"),
+                        sampleItem.get("description"),
+                        iconSrc, sampleItem.get("orders")});
         Map map = new LinkedHashMap();
         map.put("id", id);
         map.put("samples_id", sampleItem.get("samples_id"));
         map.put("title", (String)sampleItem.get("title"));
         map.put("description", (String)sampleItem.get("description"));
+        map.put("orders", sampleItem.get("orders"));
         map.put("iconSrc", iconSrc);
         return ResponseEntity.ok(map);
     }
@@ -77,5 +79,41 @@ public class SampleSessionRest {
             @RequestHeader("file-group") String group) {
         sqlService.delete(group, new Object[]{sampleItem.get("id")});
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(path = "sample/session/image/add", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity addSessionImage(
+            @RequestBody Map<String, Object> sampleItem,
+            @RequestHeader("file-group") String group){
+        String iconSrc = storageService.store((String) sampleItem.get("icon"), group);
+//        sqlService.update(group,
+//                new Object[]{sampleItem.get("title"), sampleItem.get("description"), imageSrc});
+        long id = sqlService.insert(group, "vavishka_seq",
+                new Object[]{sampleItem.get("samples_id"), sampleItem.get("title"),
+                        sampleItem.get("description"),
+                        iconSrc, sampleItem.get("orders")});
+        Map map = new LinkedHashMap();
+        map.put("id", id);
+        map.put("samples_id", sampleItem.get("samples_id"));
+        map.put("title", (String)sampleItem.get("title"));
+        map.put("description", (String)sampleItem.get("description"));
+        map.put("orders", sampleItem.get("orders"));
+        map.put("iconSrc", iconSrc);
+        return ResponseEntity.ok(map);
+    }
+
+    @PostMapping(path = "sample/session/images", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity getSessionImages(@RequestBody Map<String, Object> sampleItem) {
+        List<Map<String, Object>> mapList = sqlService.listByName("get-session-images",
+                new Object[]{sampleItem.get("id")});
+        SortedMap<String, Map<String, Object>> map  = new TreeMap<>();
+        for (Map m : mapList) {
+            map.put(m.get("ID").toString(), m);
+        }
+        return ResponseEntity.ok(map);
     }
 }

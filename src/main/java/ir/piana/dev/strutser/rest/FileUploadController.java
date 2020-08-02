@@ -2,13 +2,18 @@ package ir.piana.dev.strutser.rest;
 
 import com.google.api.client.util.Maps;
 import ir.piana.dev.strutser.model.ResponseModel;
+import ir.piana.dev.strutser.service.storage.AfterSaveImage;
+import ir.piana.dev.strutser.service.storage.GroupProperties;
 import ir.piana.dev.strutser.service.storage.StorageFileNotFoundException;
 import ir.piana.dev.strutser.service.storage.StorageService;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +32,12 @@ import java.util.stream.Collectors;
 public class FileUploadController {
     @Autowired
     private StorageService storageService;
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/")
     public String listUploadedFiles(Model model) throws IOException {
@@ -54,39 +65,23 @@ public class FileUploadController {
             @RequestHeader("image_upload_group") String group,
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
-        List<Object> objects = Arrays.asList(new Object[10]);
-        Map<String, String> replaceMap = new LinkedHashMap();
-        Enumeration<String> headerNames = request.getHeaderNames();
-        int max = 0;
-        while (headerNames.hasMoreElements()) {
-            String key = headerNames.nextElement();
-             if(key.startsWith("image_upload_sql_param_")) {
-                 Integer order = Integer.parseInt(key.substring(23));
-                 max = order > max ? order : max;
-                 String header = request.getHeader(key);
-                 if (header.startsWith("i:")) {
-                     objects.set(order - 1, Integer.parseInt(header.substring(2)));
-                 } else if (header.startsWith("l:")) {
-                     objects.set(order - 1, Long.parseLong(header.substring(2)));
-                 } else if (header.startsWith("f:")) {
-                     objects.set(order - 1, Float.parseFloat(header.substring(2)));
-                 } else if (header.startsWith("d:")) {
-                     objects.set(order - 1, Double.parseDouble(header.substring(2)));
-                 } else if (header.startsWith("b:")) {
-                     objects.set(order - 1, Boolean.valueOf(header.substring(2)));
-                 } else {
-                     objects.set(order - 1, header);
-                 }
-             } else if(key.startsWith("$") && key.endsWith("$")) {
-                 replaceMap.put(key, request.getHeader(key));
-             }
+        String path = storageService.store(file, group);
+
+        GroupProperties groupProperties = storageService.getGroupProperties(group);
+        String afterSaveImageName = groupProperties.getAfterSaveImage();
+
+        if(afterSaveImageName != null && !afterSaveImageName.isEmpty()) {
+            AfterSaveImage afterSaveImage = (AfterSaveImage) applicationContext.getBean(afterSaveImageName);
+            return afterSaveImage.doWork(request, path);
         }
-        String path = storageService.store(file, group, objects.subList(0, max).toArray(), replaceMap);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
 
         Map map = Maps.newHashMap();
         map.put("path", path);
+
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+
         return ResponseEntity.ok(ResponseModel.builder().code(0).data(map).build());
     }
 

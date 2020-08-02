@@ -36,11 +36,19 @@ storage:
       folder: sample
       width: 640
       height: 640
+    sample-session-image:
+      folder: sample-session
+      width: 512
+      height: 512
+      afterSaveImage: sampleSessionImageBusiness
     sample-session:
       folder: sample-session
-      width: 640
-      height: 640
+      width: 512
+      height: 512
       sql: update samples_session set $image_src$ = ? where id = ?
+      sqls:
+        - delete samples_session_image where samples_session_id = $sampleSessionId$ and orders = $orders$
+        - insert into samples_session_image (id, samples_session_id, image_src, orders) values($id$, $sampleSessionId$, $imageSrc$, $orders$)
     header:
       folder: header
       width: 640
@@ -68,9 +76,11 @@ sql:
       select: select id, title, description, image_src from samples
       delete: delete from samples where id = ?
     sample-session:
-      insert: insert into samples_session (id, samples_id, title, description, icon_src) values(?, ?, ?, ?, ?)
+      insert: insert into samples_session (id, samples_id, title, description, icon_src, orders) values(?, ?, ?, ?, ?, ?)
       update: update samples_session set title = ?, description = ?, image_src = ? where id = ?
-      select: select id, samples_id, title, description, detail, icon_src, orders, image_src1, image_src2, image_src3, image_src4, image_src5, image_src6, image_src7, image_src8 from samples_session where samples_id = ? order by orders asc
+      select: select id, samples_id, title, description, detail, icon_src, orders from samples_session where samples_id = ? order by orders asc
       delete: delete from samples_session where id = ?
   map:
     get-sample-by-id: select id, title, description, image_src from samples where id = ?
+    get-session-images: select id, image_src, orders from samples_session_image where samples_session_id = ?
+    insert-session-image: insert into samples_session_image (id, image_src, samples_session_id, orders) values (?, ?, ?, ?)

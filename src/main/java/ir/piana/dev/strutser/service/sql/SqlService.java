@@ -27,12 +27,22 @@ public class SqlService {
         return id == null ? 0 : id;
     }
 
+    public long insertByQueryName(String queryName, String sequenceName, Object[] sqlParams) {
+        Long id = jdbcTemplate.queryForObject("select " + sequenceName + ".nextval from dual", Long.class);
+        jdbcTemplate.update(sqlProperties.getMap().get(queryName), ArrayUtils.addAll(new Object[] {id}, sqlParams));
+        return id == null ? 0 : id;
+    }
+
     public void update(String group, Object[] sqlParams) {
         jdbcTemplate.update(sqlProperties.getGroups().get(group).getUpdate(), sqlParams);
     }
 
     public List<Map<String, Object>> list(String group, Object[] sqlParams) {
         return jdbcTemplate.queryForList(sqlProperties.getGroups().get(group).getSelect(), sqlParams);
+    }
+
+    public List<Map<String, Object>> listByName(String queryName, Object[] sqlParams) {
+        return jdbcTemplate.queryForList(sqlProperties.getMap().get(queryName), sqlParams);
     }
 
     public Map<String, Object> select(String queryName, Object[] sqlParams) {

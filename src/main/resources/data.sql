@@ -43,13 +43,13 @@ CREATE TABLE IF NOT EXISTS samples_session (
     detail varchar(4096) ,
     icon_src varchar(256),
     orders int,
-    image_src1 varchar(256),
-    image_src2 varchar(256),
-    image_src3 varchar(256),
-    image_src4 varchar(256),
-    image_src5 varchar(256),
-    image_src6 varchar(256),
-    image_src7 varchar(256),
-    image_src8 varchar(256),
     CONSTRAINT FK_SESSION_TO_SAMPLES FOREIGN KEY ( samples_id ) REFERENCES samples( id )
+);
+
+CREATE TABLE IF NOT EXISTS samples_session_image (
+    id bigint default vavishka_seq.nextval primary key,
+    samples_session_id bigint,
+    orders int,
+    image_src varchar(256),
+    CONSTRAINT FK_SESSION_IMAGE_TO_SAMPLES_SESSION FOREIGN KEY ( samples_session_id ) REFERENCES samples_session( id )
 );

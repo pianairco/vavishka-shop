@@ -44,8 +44,20 @@ public class BulmaRest {
     }
 
     @GetMapping(path = "/sample")
-    public ModelAndView getSamplePage(HttpServletRequest request) {
-        return new ModelAndView("bulma.samplePage");
+    public ModelAndView getSamplePage(@RequestParam("id") long id,
+                                      HttpServletRequest request)
+            throws JsonProcessingException {
+        List<Map<String, Object>> list = sqlService.list("sample-session", new Object[]{id});
+        SortedMap<String, Map<String, Object>> map  = new TreeMap<>();
+        for (Map m : list) {
+            map.put(m.get("ID").toString(), m);
+        }
+        Map<String, Object> model = new LinkedHashMap<>();
+        model.put("sessions", mapper.writeValueAsString(list));
+        model.put("sessionsMap", mapper.writeValueAsString(map));
+        Map<String, Object> sample = sqlService.select("get-sample-by-id", new Object[]{id});
+        model.put("sample", mapper.writeValueAsString(sample));
+        return new ModelAndView("bulma.samplePage", model);
     }
 
     @GetMapping(path = "/admin/sample")

@@ -10,10 +10,11 @@ import java.util.stream.Stream;
 public interface StorageService {
     void init();
 
-    String store(MultipartFile file, String group, Object[] sqlParams, Map<String, String> replaceMap);
+    GroupProperties getGroupProperties(String group);
 
-    String store(MultipartFile file, String group, Object[] sqlParams, Map<String, String> replaceMap,
-               Integer width, Integer height);
+    String store(MultipartFile file, String group);
+
+    String store(MultipartFile file, String group, Integer width, Integer height);
 
     String store(String file, String group);
 

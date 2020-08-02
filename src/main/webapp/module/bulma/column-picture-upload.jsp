@@ -34,15 +34,17 @@
     <div class="card-image">
         <div class="card-image">
             <figure class="image is-64x64">
-                <img v-if="!item.image" :src="unknownURL" >
                 <img v-if="item.image" :src="item.image" >
+                <img v-if="!item.image && editedImageSrc" :src="editedImageSrc"/>
+                <img v-if="!item.image && !editedImageSrc" :src="unknownURL"/>
             </figure>
         </div>
         <div class="columns is-overlay is-vcentered is-multiline is-mobile" style="margin: 0px;">
             <div class="column is-full" style="margin: 0px; padding: 0px;">
                 <span class="image is-64x64">
-                    <img v-if="!item.image" src="/img/plus.png" style="opacity: 0.4;" v-on:click="selectImage">
-                    <img v-if="item.image" src="/img/delete.png" style="opacity: 0.4;" v-on:click="deleteImage">
+                    <img v-if="!isActive" src="/img/select.png" style="opacity: 0.4;" v-on:click="selectImage">
+                    <img v-if="isActive && !item.image" src="/img/plus.png" style="opacity: 0.4;" v-on:click="selectImage">
+                    <img v-if="isActive && item.image" src="/img/delete.png" style="opacity: 0.4;" v-on:click="deleteImage">
                 </span>
             </div>
             <input type="file" id="file" ref="file" @change="handleFileUpload($event)"
@@ -55,6 +57,7 @@
             formName: String,
             propertyName: String,
             isUpload: true,
+            isActive: false,
             url: String,
             sessionId: {
                 type: Number
@@ -102,7 +105,10 @@
                 this.item.image = false;
             },
             selectImage() {
-                this.$refs.file.click();
+                if(!this.isActive)
+                    this. isActive = true;
+                else
+                    this.$refs.file.click();
             },
             handleFileUpload: function(event) {
                 // console.log(event.target.files[0]);

@@ -30,7 +30,7 @@
                 <div class="card-image">
                     <figure class="image is-4by3">
                         <img v-if="Object.keys(sessionMap).length == 0" src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                        <img v-if="Object.keys(sessionMap).length > 0" :src="sessionMap['10']['imageSrc1']" alt="Placeholder image">
+                        <img v-if="Object.keys(sessionMap).length > 0" :src="sessionMap['2']['imageSrc1']" alt="Placeholder image">
                     </figure>
                 </div>
                 <div class="card-content">
@@ -149,7 +149,7 @@
             console.log(Object.keys(this.sessionImages).length);
             console.log(this.sessionImages);
             console.log(this.sessionMap);
-            console.log(this.sessionMap['10']['imageSrc1']);
+            console.log(this.sessionMap['2']['imageSrc1']);
         },
         components: {
             columnPictureUpload, pictureBox, pictorialMenuItem, pictorialMenuItemCreator

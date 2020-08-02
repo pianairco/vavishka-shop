@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import java.util.List;
 
 
 @Getter
@@ -15,5 +16,7 @@ public class GroupProperties {
     private String folder;
     private int width;
     private int height;
+    private String afterSaveImage;
     private String sql;
+    private List<String> sqls;
 }
