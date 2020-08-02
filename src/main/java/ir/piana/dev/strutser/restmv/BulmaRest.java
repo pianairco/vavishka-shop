@@ -28,6 +28,11 @@ public class BulmaRest {
     @Autowired
     private ObjectMapper mapper;
 
+    @GetMapping(path = "/test")
+    public ModelAndView getTest(HttpServletRequest request) {
+        return new ModelAndView("index.page");
+    }
+
     @GetMapping(path = "/home")
     public ModelAndView getHome(HttpServletRequest request) {
         return new ModelAndView("bulma.homePage");

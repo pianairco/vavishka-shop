@@ -14,6 +14,10 @@
     </definition>
 
     <!-- Home Page  -->
+    <definition name="index.page" template="/index.jsp">
+    </definition>
+
+    <!-- Home Page  -->
     <definition name="bulma.homePage" extends="bulma.definition">
         <put-attribute name="title" value="Bulma Page" />
         <put-attribute name="body" value="/bulma/home.jsp" />

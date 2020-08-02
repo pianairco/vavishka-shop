@@ -19,12 +19,13 @@ public class SampleSessionImageBusiness implements AfterSaveImage {
         Object sessionId = getValueObject(request.getHeader("sessionId"));
         Object orders = getValueObject(request.getHeader("orders"));
 
-        sqlService.insertByQueryName("insert-session-image", "vavishka_seq",
-                new Object[]{ path, sessionId, orders });
+        long id = sqlService.insertByQueryName("insert-session-image", "vavishka_seq",
+                new Object[]{path, sessionId, orders});
         Map<String, Object> map = new LinkedHashMap<>();
-        map.put("sessionId", sessionId);
+        map.put("id", id);
+        map.put("session_id", sessionId);
         map.put("orders", orders);
-        map.put("imageScr", path);
+        map.put("image_src", path);
         return ResponseEntity.ok(map);
     }
 

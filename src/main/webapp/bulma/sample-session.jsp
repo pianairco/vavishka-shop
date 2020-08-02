@@ -24,19 +24,17 @@
                 </ul>
             </aside>
         </div>
-        <div v-if="sharedState['forms']['session']">
-            <h1  v-for="sessionImage in sharedState['forms']['session']['images']">{{sessionImage['imageSrc']}}</h1>
-        </div>
         <div class="column is-full-mobile is-three-quarters-desktop">
-            <sample-session-picture-manager :session-images="sessionImages"
-                    v-on:select-image="addSessionImage"
+            <sample-session-picture-manager
+                    v-on:add-session-image="addSessionImage"
+                    v-on:select-session-image="selectSessionImage"
                     v-if="activeId"></sample-session-picture-manager>
         </div>
     </div>
 </div>
 
 <script>
-    <%=JspUtil.getStore("store")%>
+    <%=JspUtil.getStore("store", "session")%>
 
     var app = new Vue({
         el: '#bulma-sample-page',
@@ -50,9 +48,6 @@
                 activeId: 0,
                 imageUploadGroup: 'sample-session-image',
                 imageUploadUrl: '/images/image-upload',
-                sessionImages: {
-                },
-                sharedState: store.state,
             }
         },
         methods: {
@@ -72,17 +67,23 @@
                 this.activeId = id;
                 axios.post('/sample/session/images', { "id": this.activeId }, { headers: { 'file-group': 'sample-session' } })
                     .then((response) => {
-                    console.log(response.data);
-                let obj = Object.assign({}, this.sharedState.forms['sessoin']);
-                console.log(JSON.stringify(obj));
-                obj['images'] = response.data;
-                console.log(JSON.stringify(obj));
-                this.sharedState.forms['session'] = obj;
+                    // console.log(response.data);
+                    console.log(store.getFromForm('session', 'images'))
+                    if(!store.setToForm('session', 'images'))
+                        store.setToForm('session', 'images', response.data);
+                    console.log(store.getFromForm('session', 'images'))
+                    store.setToForm('session', 'activeId', 0);
+                    // let obj = Object.assign({}, this.sharedState.forms['sessoin']);
+                    // obj['images'] = response.data;
+                    // this.sharedState.forms['session'] = obj;
                     //store.setToForms("sessoin", "images", response.data);
-                    console.log("xx", JSON.stringify(this.sharedState))
                     this.sessionImageMap = response.data;
-            })
-            .catch((err) => { console.log(err); });
+                })
+                .catch((err) => { console.log(err); });
+            },
+            selectSessionImage: function (id) {
+                console.log(id)
+                store.setToForm('session', 'activeId', id);
             },
             addSessionImage: function (image) {
                 console.log("add new session image:", image);
@@ -95,19 +96,29 @@
                     'Content-Type': 'multipart/form-data'
                 };
 
-                console.log(JSON.stringify(headers));
-                console.log(this.imageUploadUrl);
+                // console.log(JSON.stringify(headers));
+                // console.log(this.imageUploadUrl);
 
                 axios.post(this.imageUploadUrl, formData, {
                     headers: headers
                 }).then((res) => {
-                    console.log('SUCCESS!!');
-                    console.log(res);
-                    console.log(res['data']['data']['path']);
-                    console.log(this.order);
-                    console.log("add-session-image", res['data']['data']['path']);
-                    // self.state.isSend = true;
-                    // self.state.isSpin = false;
+                    // console.log(obj);
+                    // store.setToForm('session', 'images', obj);
+                    this.sessionSelected(this.activeId);
+                // Vue.nextTick(() => {
+                //         let obj = store.getFromForm('session', 'images');
+                //
+                //         // console.log(JSON.stringify(obj));
+                //         console.log(res['data']['id']);
+                //         console.log(res['data']);
+                //         obj.set(res['data']['id'], obj[46]);
+                //     store.setToForm('session', 'images', obj)
+                //     // store.setToFormProperty('session', 'images', null)
+                //     // do something cool
+                // console.log(store.getFromForm('session', 'images'));
+                // });
+                    // store.setToFormProperty('session', 'images', res['data']['id'], res['data']);
+                    // store.setToForm('session', 'images', store.getFromForm('session', 'images'));
                 }).catch(() => {
                     console.log('FAILURE!!');
                 // self.state.isSpin = false;
@@ -123,9 +134,9 @@
             }
         },
         mounted: function () {
-            console.log(Object.keys(this.sessionImages).length);
-            console.log(this.sessionImages);
-            console.log(this.sessionMap);
+            // console.log(Object.keys(this.sessionImages).length);
+            // console.log(this.sessionImages);
+            // console.log(this.sessionMap);
         },
         components: {
             pictorialMenuItem,

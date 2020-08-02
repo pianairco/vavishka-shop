@@ -36,7 +36,8 @@
 <div class="card">
     <div class="card-image">
         <figure class="image is-4by3">
-            <img :src="unknownURL">
+            <img v-if="activeId == 0" :src="unknownURL">
+            <img v-if="activeId != 0" :src="images[activeId]['imageSrc']">
         </figure>
         <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
             <div class="column is-full" style="height: 20%;"></div>
@@ -58,12 +59,11 @@
     <div class="card-content">
         <div class="columns is-mobile is-multiline" style="margin: 0px;">
             <session-picture-upload v-on:select-image="addSessionImage"></session-picture-upload>
-<div v-if="sharedState['forms']['session']">
-<h1 v-for="sessionImage in sharedState['forms']['session']['images']">{{sessionImage['imageSrc']}}</h1>
             <session-picture-select
-                v-for="sessionImage in sharedState['forms']['session']['images']"
-                v-bind:session-image="sessionImage" v-on:select-image="selectSessionImage"></session-picture-select>
-</div>
+                v-for="image in images"
+                :session-image="image"
+                v-bind:active-id="activeId"
+                v-on:select-session-image="selectSessionImage"></session-picture-select>
         </div>
     </div>
 </div>
@@ -77,7 +77,6 @@
                 type: Number
             },
             url: String,
-            sessionImages: {},
             imageUploadGroup: {
                 type: String
             },
@@ -86,9 +85,6 @@
             },
             editedImageSrc: {
               type: String
-            },
-            images: {
-                type: Array
             },
             title: {
                 type: String
@@ -105,12 +101,31 @@
                     image: false,
                 },
                 file: '',
-                sharedState: store.state
+                sharedState: store.state,
+                images: {},
+                activeId: 0
             }
         },
         components: {
             sessionPictureUpload,
             sessionPictureSelect
+        },
+        computed: {
+            imagesVal: function () {
+                return store.getFromForm('session', 'images');
+            },
+            activeIdVal: function () {
+                return store.getFromForm('session', 'activeId');
+            }
+        },
+        watch: {
+            imagesVal: function () {
+                console.log("+")
+                this.images = store.getFromForm('session', 'images');
+            },
+            activeIdVal: function () {
+                this.activeId = store.getFromForm('session', 'activeId');
+            }
         },
         mounted: function () {
         },
@@ -118,11 +133,11 @@
             reset: function () {
                 this.item.image = false;
             },
-            selectSessionImage: function() {
-
+            selectSessionImage: function(id) {
+                this.$emit("select-session-image", id);
             },
             addSessionImage: function (image) {
-                this.$emit("select-image", image);
+                this.$emit("add-session-image", image);
 
                 // this.sessionImages[order + ''] = path;
                 // console.log(this.sessionImages);
