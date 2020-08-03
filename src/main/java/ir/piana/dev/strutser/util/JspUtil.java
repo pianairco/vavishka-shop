@@ -38,7 +38,7 @@ public class JspUtil {
                 "        getFromForm: function(formName, propertyName) {\n" +
                 "            return this.state.forms[formName][propertyName];\n" +
                 "        },\n" +
-                "        setToFormProperty: function(formName, propertyName, key, value) {\n" +
+                "        setToFormProperty: function(formName, propertyName, property, value) {\n" +
                 "            this.state.forms[formName][propertyName][property] = value;\n" +
                 "            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
                 "        }\n" +

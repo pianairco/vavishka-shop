@@ -34,29 +34,7 @@
 </div>
 
 <script>
-<%--    <%=JspUtil.getStore("store", "session")%>--%>
-
-    var store= {
-        state: {
-            forms: {
-                session: {}
-            }
-        },
-        setToForm: function (formName, propertyName, property) {
-            this.state.forms[formName][propertyName] = property;
-            this.state.forms[formName] = JSON.parse(JSON.stringify(this.state.forms[formName]));
-        },
-        setToFormProperty: function (formName, propertyName, property, value) {
-            // let obj = Object.assign({}, this.state.forms[formName][propertyName]);
-            // obj[property] = value;
-            // this.state.forms[formName][propertyName] = obj;
-            this.state.forms[formName][propertyName][property] = value;
-            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));
-        },
-        getFromForm: function (formName, propertyName) {
-            return this.state.forms[formName][propertyName];
-        }
-    };
+    <%=JspUtil.getStore("store", "session")%>
 
     var app = new Vue({
         el: '#bulma-sample-page',
