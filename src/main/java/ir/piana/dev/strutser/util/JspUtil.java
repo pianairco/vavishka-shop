@@ -32,15 +32,15 @@ public class JspUtil {
                 }
                 sb.append("}},\n" +
                 "        setToForm: function(formName, propertyName, property) {\n" +
-                "            let obj = Object.assign({}, this.state.forms[formName]);\n" +
-                "            obj[propertyName] = property;\n" +
-                "            this.state.forms[formName] = obj;\n" +
+                "            this.state.forms[formName][propertyName] = property;\n" +
+                "            this.state.forms[formName] = JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
                 "        },\n" +
                 "        getFromForm: function(formName, propertyName) {\n" +
                 "            return this.state.forms[formName][propertyName];\n" +
                 "        },\n" +
                 "        setToFormProperty: function(formName, propertyName, key, value) {\n" +
-                "            this.state.forms[formName][propertyName][key] = value;\n" +
+                "            this.state.forms[formName][propertyName][property] = value;\n" +
+                "            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
                 "        }\n" +
                 "    };");
         return Arrays.stream(sb.toString().split("\n")).map(String::trim)

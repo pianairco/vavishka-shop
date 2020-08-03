@@ -34,7 +34,29 @@
 </div>
 
 <script>
-    <%=JspUtil.getStore("store", "session")%>
+<%--    <%=JspUtil.getStore("store", "session")%>--%>
+
+    var store= {
+        state: {
+            forms: {
+                session: {}
+            }
+        },
+        setToForm: function (formName, propertyName, property) {
+            this.state.forms[formName][propertyName] = property;
+            this.state.forms[formName] = JSON.parse(JSON.stringify(this.state.forms[formName]));
+        },
+        setToFormProperty: function (formName, propertyName, property, value) {
+            // let obj = Object.assign({}, this.state.forms[formName][propertyName]);
+            // obj[property] = value;
+            // this.state.forms[formName][propertyName] = obj;
+            this.state.forms[formName][propertyName][property] = value;
+            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));
+        },
+        getFromForm: function (formName, propertyName) {
+            return this.state.forms[formName][propertyName];
+        }
+    };
 
     var app = new Vue({
         el: '#bulma-sample-page',
@@ -67,9 +89,9 @@
                 this.activeId = id;
                 axios.post('/sample/session/images', { "id": this.activeId }, { headers: { 'file-group': 'sample-session' } })
                     .then((response) => {
-                    // console.log(response.data);
+                    console.log(response.data);
                     console.log(store.getFromForm('session', 'images'))
-                    if(!store.setToForm('session', 'images'))
+                    // if(!store.getFromForm('session', 'images'))
                         store.setToForm('session', 'images', response.data);
                     console.log(store.getFromForm('session', 'images'))
                     store.setToForm('session', 'activeId', 0);
@@ -96,41 +118,14 @@
                     'Content-Type': 'multipart/form-data'
                 };
 
-                // console.log(JSON.stringify(headers));
-                // console.log(this.imageUploadUrl);
-
                 axios.post(this.imageUploadUrl, formData, {
                     headers: headers
                 }).then((res) => {
-                    // console.log(obj);
-                    // store.setToForm('session', 'images', obj);
-                    this.sessionSelected(this.activeId);
-                // Vue.nextTick(() => {
-                //         let obj = store.getFromForm('session', 'images');
-                //
-                //         // console.log(JSON.stringify(obj));
-                //         console.log(res['data']['id']);
-                //         console.log(res['data']);
-                //         obj.set(res['data']['id'], obj[46]);
-                //     store.setToForm('session', 'images', obj)
-                //     // store.setToFormProperty('session', 'images', null)
-                //     // do something cool
-                // console.log(store.getFromForm('session', 'images'));
-                // });
-                    // store.setToFormProperty('session', 'images', res['data']['id'], res['data']);
-                    // store.setToForm('session', 'images', store.getFromForm('session', 'images'));
-                }).catch(() => {
+                    store.setToFormProperty('session', 'images', res['data']['id'], res['data']);
+                }).catch((e) => {
                     console.log('FAILURE!!');
-                // self.state.isSpin = false;
+                    console.log(e);
                 });
-
-                // this.sessionImages[order + ''] = path;
-                // console.log(this.sessionImages);
-                // if(Object.keys(this.sessionImages).length > 0) {
-                //     console.log('own')
-                // } else {
-                //     console.log('no own')
-                // }
             }
         },
         mounted: function () {
