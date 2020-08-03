@@ -67,7 +67,7 @@
         methods: {
             onClick: function() {
                 console.log("sdd");
-                store.setToForms("comp", "name", "ali");
+                store.setToForm("comp", "name", "ali");
 
                 // let obj = Object.assign({}, this.storeState.forms['comp']);
                 // obj['name'] = 'sdfs';
@@ -75,7 +75,7 @@
                 console.log(JSON.stringify(this.storeState))
             },
             onLClick: function() {
-                store.setToForms("comp", "lname", "sasa");
+                store.setToForm("comp", "lname", "sasa");
 
                 console.log(JSON.stringify(this.storeState))
             }

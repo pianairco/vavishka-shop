@@ -124,7 +124,7 @@
                     this.item.image = e.target.result;
                     this.submitFile();
                     // if(this.formName) {
-                        // store.setToForms(this.formName, this.propertyName, this.item.image);
+                        // store.setToForm(this.formName, this.propertyName, this.item.image);
                     // }
                 };
                 reader.readAsDataURL(file);

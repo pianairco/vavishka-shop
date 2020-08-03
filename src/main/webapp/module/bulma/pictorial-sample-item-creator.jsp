@@ -81,16 +81,16 @@
                 // console.log(JSON.stringify(this.sharedState.forms[this.formName]))
                 console.log(this.title)
                 console.log(this.description)
-                store.setToForms(this.formName, "title", this.title);
-                store.setToForms(this.formName, "description", this.description);
+                store.setToForm(this.formName, "title", this.title);
+                store.setToForm(this.formName, "description", this.description);
                 this.$emit("add-item", this.sharedState.forms[this.formName]);
                 this.reset();
             },
             editClick: function () {
-                store.setToForms(this.formName, "id", this.editedItem.id);
-                store.setToForms(this.formName, "title", this.title);
-                store.setToForms(this.formName, "description", this.description);
-                store.setToForms(this.formName, "imageSrc", this.imageSrc);
+                store.setToForm(this.formName, "id", this.editedItem.id);
+                store.setToForm(this.formName, "title", this.title);
+                store.setToForm(this.formName, "description", this.description);
+                store.setToForm(this.formName, "imageSrc", this.imageSrc);
                 this.$emit("edit-item", this.sharedState.forms[this.formName]);
                 this.reset();
             }

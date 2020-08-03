@@ -91,8 +91,9 @@
                 axios.post('/sample/delete', { "id": id }, { headers: { 'file-group': 'sample' } })
                     .then((response) => {
                         console.log(response.data);
-                        let index = this.samples.findIndex(item => item.id === response.data.id);
+                        let index = this.samples.findIndex(item => item.id === id);
                         console.log(index);
+                        console.log(this.samples);
                         this.samples.splice(index, 1);
                     })
                     .catch((err) => { this.message = err; });

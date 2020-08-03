@@ -110,7 +110,7 @@
                 reader.onload = (e) => {
                     this.item.image = e.target.result;
                     if(this.formName) {
-                        store.setToForms(this.formName, this.propertyName, this.item.image);
+                        store.setToForm(this.formName, this.propertyName, this.item.image);
                     }
                 };
                 reader.readAsDataURL(file);

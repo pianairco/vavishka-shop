@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    <%=JspUtil.getStore("store", "session")%>
+    <%=JspUtil.getStore("store", "session", "uploader1")%>
 
     var app = new Vue({
         el: '#bulma-sample-page',
@@ -58,7 +58,7 @@
                 axios.post('/sample/session/add', form, { headers: { 'file-group': 'sample-session' } })
                     .then((response) => {
                         console.log(response.data);
-                        this.sessionImageMap = response.data;
+                        this.sessions.push(response.data);
                     })
                     .catch((err) => { this.message = err; });
             },
@@ -76,7 +76,7 @@
                     // let obj = Object.assign({}, this.sharedState.forms['sessoin']);
                     // obj['images'] = response.data;
                     // this.sharedState.forms['session'] = obj;
-                    //store.setToForms("sessoin", "images", response.data);
+                    //store.setToForm("sessoin", "images", response.data);
                     this.sessionImageMap = response.data;
                 })
                 .catch((err) => { console.log(err); });

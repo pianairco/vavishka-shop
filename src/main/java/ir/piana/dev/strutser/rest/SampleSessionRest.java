@@ -44,7 +44,7 @@ public class SampleSessionRest {
         map.put("title", (String)sampleItem.get("title"));
         map.put("description", (String)sampleItem.get("description"));
         map.put("orders", sampleItem.get("orders"));
-        map.put("iconSrc", iconSrc);
+        map.put("icon_src", iconSrc);
         return ResponseEntity.ok(map);
     }
 
@@ -67,7 +67,7 @@ public class SampleSessionRest {
         map.put("id", sampleItem.get("id"));
         map.put("title", (String)sampleItem.get("title"));
         map.put("description", (String)sampleItem.get("description"));
-        map.put("imageSrc", imageSrc);
+        map.put("image_src", imageSrc);
         return ResponseEntity.ok(map);
     }
 

@@ -43,7 +43,7 @@ public class SampleItemRest {
         map.put("id", id);
         map.put("title", (String)sampleItem.get("title"));
         map.put("description", (String)sampleItem.get("description"));
-        map.put("imageSrc", imageSrc);
+        map.put("image_src", imageSrc);
         return ResponseEntity.ok(map);
     }
 
@@ -66,7 +66,7 @@ public class SampleItemRest {
         map.put("id", sampleItem.get("id"));
         map.put("title", (String)sampleItem.get("title"));
         map.put("description", (String)sampleItem.get("description"));
-        map.put("imageSrc", imageSrc);
+        map.put("image_src", imageSrc);
         return ResponseEntity.ok(map);
     }
 
