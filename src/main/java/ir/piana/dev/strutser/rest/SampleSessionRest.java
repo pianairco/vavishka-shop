@@ -104,6 +104,19 @@ public class SampleSessionRest {
         return ResponseEntity.ok(map);
     }
 
+    @PostMapping(path = "sample/session/image/delete", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity deleteSessionImage(
+            @RequestBody Map<String, Object> sampleItem,
+            @RequestHeader("business") String queryName){
+        Integer id = (Integer)sampleItem.get("id");
+        sqlService.deleteByQueryName(queryName, new Object[]{id});
+        Map map = new LinkedHashMap();
+        map.put("id", id);
+        return ResponseEntity.ok(map);
+    }
+
     @PostMapping(path = "sample/session/images", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional

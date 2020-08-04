@@ -26,6 +26,8 @@
         </div>
         <div class="column is-full-mobile is-three-quarters-desktop">
             <sample-session-picture-manager
+                    v-on:delete-session-image="deleteSessionImage"
+                    v-on:replace-session-image="replaceSessionImage"
                     v-on:add-session-image="addSessionImage"
                     v-on:select-session-image="selectSessionImage"
                     v-if="activeId"></sample-session-picture-manager>
@@ -100,6 +102,42 @@
                     headers: headers
                 }).then((res) => {
                     store.setToFormProperty('session', 'images', res['data']['id'], res['data']);
+                }).catch((e) => {
+                    console.log('FAILURE!!');
+                    console.log(e);
+                });
+            },
+            replaceSessionImage: function (image, imageId) {
+                console.log("replace new session image:", image, imageId);
+                let formData = new FormData();
+                formData.append('file', image);
+                let headers = {
+                    'image_upload_group': 'replace-sample-session-image',
+                    'id': imageId,
+                    'Content-Type': 'multipart/form-data'
+                };
+
+                axios.post(this.imageUploadUrl, formData, {
+                    headers: headers
+                }).then((res) => {
+                    store.replaceToFormProperty('session', 'images', res['data']['id'], 'imageSrc', res['data']['imageSrc']);
+                }).catch((e) => {
+                    console.log('FAILURE!!');
+                    console.log(e);
+                });
+            },
+            deleteSessionImage: function (imageId) {
+                console.log("delete new session image:", imageId);
+                let headers = {
+                    'business': 'delete-session-image',
+                    'Content-Type': 'application/json'
+                };
+
+                axios.post('/sample/session/image/delete', {'id': imageId }, {
+                    headers: headers
+                }).then((res) => {
+                    store.removeFromFormProperty('session', 'images', res['data']['id']);
+                    store.setToForm('session', 'activeId', 0);
                 }).catch((e) => {
                     console.log('FAILURE!!');
                     console.log(e);

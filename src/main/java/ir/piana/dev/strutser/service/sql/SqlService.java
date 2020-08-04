@@ -37,6 +37,10 @@ public class SqlService {
         jdbcTemplate.update(sqlProperties.getGroups().get(group).getUpdate(), sqlParams);
     }
 
+    public void updateByQueryName(String queryName, Object[] sqlParams) {
+        jdbcTemplate.update(sqlProperties.getMap().get(queryName), sqlParams);
+    }
+
     public List<Map<String, Object>> list(String group, Object[] sqlParams) {
         return jdbcTemplate.queryForList(sqlProperties.getGroups().get(group).getSelect(), sqlParams);
     }
@@ -55,5 +59,9 @@ public class SqlService {
 
     public void delete(String group, Object[] sqlParams) {
         jdbcTemplate.update(sqlProperties.getGroups().get(group).getDelete(), sqlParams);
+    }
+
+    public void deleteByQueryName(String queryName, Object[] sqlParams) {
+        jdbcTemplate.update(sqlProperties.getMap().get(queryName), sqlParams);
     }
 }

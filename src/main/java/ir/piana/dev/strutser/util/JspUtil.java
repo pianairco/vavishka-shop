@@ -41,6 +41,14 @@ public class JspUtil {
                 "        setToFormProperty: function(formName, propertyName, property, value) {\n" +
                 "            this.state.forms[formName][propertyName][property] = value;\n" +
                 "            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
+                "        },\n" +
+                "        removeFromFormProperty: function(formName, propertyName, property) {\n" +
+                "            delete this.state.forms[formName][propertyName][property];\n" +
+                "            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
+                "        },\n" +
+                "        replaceToFormProperty: function(formName, propertyName, property, field, value) {\n" +
+                "            this.state.forms[formName][propertyName][property][field] = value;\n" +
+                "            this.state.forms[formName] =  JSON.parse(JSON.stringify(this.state.forms[formName]));\n" +
                 "        }\n" +
                 "    };");
         return Arrays.stream(sb.toString().split("\n")).map(String::trim)

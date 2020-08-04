@@ -7,24 +7,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-@Component("sampleSessionImageBusiness")
-public class SampleSessionImageBusiness implements AfterSaveImage {
+@Component("replaceSampleSessionImageBusiness")
+public class ReplaceSampleSessionImageBusiness implements AfterSaveImage {
     @Autowired
     private SqlService sqlService;
 
     @Override
     public ResponseEntity doWork(HttpServletRequest request, String path) {
-        Object sessionId = getValueObject(request.getHeader("sessionId"));
-        Object orders = getValueObject(request.getHeader("orders"));
+        Object id = getValueObject(request.getHeader("id"));
 
-        long id = sqlService.insertByQueryName("insert-session-image", "vavishka_seq",
-                new Object[]{path, sessionId, orders});
+        sqlService.updateByQueryName("replace-session-image",
+                new Object[]{path, id});
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("id", id);
-        map.put("session_id", sessionId);
-        map.put("orders", orders);
         map.put("image_src", path);
         return ResponseEntity.ok(map);
     }

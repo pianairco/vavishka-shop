@@ -41,6 +41,17 @@ storage:
       width: 512
       height: 512
       afterSaveImage: sampleSessionImageBusiness
+    replace-sample-session-image:
+      folder: sample-session
+      width: 512
+      height: 512
+      afterSaveImage: replaceSampleSessionImageBusiness
+    delete-sample-session-image:
+      folder: sample-session
+      width: 512
+      height: 512
+      afterSaveImage: deleteSampleSessionImageBusiness
+
     sample-session:
       folder: sample-session
       width: 512
@@ -84,3 +95,5 @@ sql:
     get-sample-by-id: select id, title, description, image_src from samples where id = ?
     get-session-images: select id, image_src, orders from samples_session_image where samples_session_id = ?
     insert-session-image: insert into samples_session_image (id, image_src, samples_session_id, orders) values (?, ?, ?, ?)
+    replace-session-image: update samples_session_image set image_src = ? where id = ?
+    delete-session-image: delete samples_session_image where id = ?

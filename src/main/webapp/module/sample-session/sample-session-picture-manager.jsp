@@ -11,6 +11,15 @@
 <jsp:include page="/module/sample-session/session-picture-select.jsp" />
 
 <style type="text/css">
+    .sample-item-overlay-button {
+        color: #c69500;
+        cursor: pointer;
+    }
+    .sample-item-overlay-button:hover {
+        background-color: #c2e0f5;
+        padding: 4px;
+        border-radius: 3px;
+    }
     .picture-upload-center-control-container {
         margin-top: 0px;
         margin-bottom: 0px;
@@ -40,20 +49,30 @@
             <img v-if="activeId != 0" :src="images[activeId]['imageSrc']">
         </figure>
         <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
-            <div class="column is-full" style="height: 20%;"></div>
-                <div class="column is-full is-info" style="height: 60%;">
-                    <div class="columns is-mobile is-vcentered is-multiline picture-box-center-control-container"
-                        v-if="images && images.length > 1" style="margin-top: auto; margin-bottom: auto;">
-                        <div class="column is-narrow">
-                            <button v-on:click="next" class="button is-white fa fa-angle-right" style="opacity: 0.4;"></button>
-                        </div>
+            <div class="column is-full" style="height: 20%;">
+                <div v-if="activeId" class="columns" style="padding: 0px; margin: 0px;">
+                    <input type="file" id="file" ref="file" @change="handleFileUpload($event)"
+                        class="is-white fa fa-angle-right" style="display: none" />
+                    <div class="column" style="padding: 0px; margin: 0px;">
+                        <span><i class="fa fa-image sample-item-overlay-button" v-on:click="selectImage" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-trash sample-item-overlay-button" v-on:click="deleteClick" aria-hidden="true"></i></span>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-full is-info" style="height: 60%;">
+                <div class="columns is-mobile is-vcentered is-multiline picture-box-center-control-container"
+                    v-if="images && images.length > 1" style="margin-top: auto; margin-bottom: auto;">
+                    <div class="column is-narrow">
+                        <button v-on:click="next" class="button is-white fa fa-angle-right" style="opacity: 0.4;"></button>
+                    </div>
                     <div class="column">&nbsp;</div>
                     <div class="column is-narrow">
                         <button v-on:click="prev" class="button is-white is-transparent fa fa-angle-left" style="opacity: 0.4;"></button>
                     </div>
                 </div>
             </div>
-            <div class="column is-full is-info " style="height: 20%;"></div>
+            <div class="column is-full is-info " style="height: 20%;">
+            </div>
         </div>
     </div>
     <div class="card-content">
@@ -138,23 +157,12 @@
             },
             addSessionImage: function (image) {
                 this.$emit("add-session-image", image);
-
-                // this.sessionImages[order + ''] = path;
-                // console.log(this.sessionImages);
-                // if(Object.keys(this.sessionImages).length > 0) {
-                //     console.log('own')
-                // } else {
-                //     console.log('no own')
-                // }
             },
-            deleteImage() {
-                this.item.image = false;
+            deleteClick: function () {
+                this.$emit("delete-session-image", this.activeId);
             },
             selectImage() {
-                if(!this.isActive)
-                    this. isActive = true;
-                else
-                    this.$refs.file.click();
+                this.$refs.file.click();
             },
             handleFileUpload: function(event) {
                 // console.log(event.target.files[0]);
@@ -168,46 +176,9 @@
 
                 reader.onload = (e) => {
                     this.item.image = e.target.result;
-                    this.submitFile();
-                    // if(this.formName) {
-                        // store.setToForm(this.formName, this.propertyName, this.item.image);
-                    // }
+                    this.$emit("replace-session-image", this.file, this.activeId);
                 };
                 reader.readAsDataURL(file);
-            },
-            submitFile: function() {
-                // console.log(this.file);
-                // console.log(this.url);
-                // console.log(this.activity);
-                // console.log(this.action);
-                let formData = new FormData();
-                formData.append('file', this.file);
-                let headers = {
-                    'image_upload_group': this.imageUploadGroup,
-                    'image_upload_sql_param_1': 'i:' + this.sessionId,
-                    'image_upload_sql_param_2': 'i:' + this.images.length + 1,
-                    'Content-Type': 'multipart/form-data'
-                };
-
-                // headers["action"] = this.action;
-                // headers["activity"] = this.activity;
-
-                let self = this;
-                // this.state.isSpin = true;
-                axios.post(this.url, formData, {
-                    headers: headers
-                }).then((res) => {
-                    console.log('SUCCESS!!');
-                    console.log(res);
-                    console.log(res['data']['data']['path']);
-                    console.log(this.order);
-                    this.$emit("add-session-image", res['data']['data']['path'], this.order);
-                    // self.state.isSend = true;
-                    // self.state.isSpin = false;
-                }).catch(() => {
-                    console.log('FAILURE!!');
-                    // self.state.isSpin = false;
-                });
             },
             next: function () {
                 this.idx++;

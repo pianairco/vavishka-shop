@@ -34,8 +34,20 @@
     <div class="card-image">
         <div class="card-image">
             <figure class="image is-64x64" :style="[activeId == sessionImage['id'] ? {'background-color': 'red'} : {'background-color': '#FFF'}]">
-                <img :src="sessionImage['imageSrc']" v-on:click="selectImage"/>
+                <img :src="sessionImage['imageSrc']"/>
             </figure>
+        </div>
+        <div class="columns is-overlay is-vcentered is-multiline is-mobile" style="margin: 0px;">
+            <div v-if="activeId != sessionImage['id']" class="column is-full" style="margin: 0px; padding: 0px;">
+                <span class="image is-64x64">
+                    <img src="/img/select.png" style="opacity: 0.08;" v-on:click="selectImage">
+                </span>
+            </div>
+            <div v-if="activeId == sessionImage['id']" class="column is-full" style="margin: 0px; padding: 0px;">
+                <span class="image is-64x32">
+                    <img src="/img/edit.png" style="opacity: 0.4;" v-on:click="selectImage">
+                </span>
+            </div>
         </div>
     </div>
 </div>
