@@ -18,7 +18,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestController
-public class SampleItemRest {
+public class SampleRest {
     @Autowired
     private StorageService storageService;
 
@@ -31,7 +31,7 @@ public class SampleItemRest {
     @PostMapping(path = "sample/add", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity addItem(
+    public ResponseEntity addSample(
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group){
         String imageSrc = storageService.store((String) sampleItem.get("image"), group);
@@ -50,7 +50,7 @@ public class SampleItemRest {
     @PostMapping(path = "sample/edit", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity editItem(
+    public ResponseEntity editSample(
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group){
         String imageSrc = null;
@@ -73,7 +73,7 @@ public class SampleItemRest {
     @PostMapping(path = "sample/delete", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity deleteItem(
+    public ResponseEntity deleteSample(
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group) {
         sqlService.delete(group, new Object[]{sampleItem.get("id")});

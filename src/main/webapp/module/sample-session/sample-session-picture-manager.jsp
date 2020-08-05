@@ -9,6 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/module/sample-session/session-picture-upload.jsp" />
 <jsp:include page="/module/sample-session/session-picture-select.jsp" />
+<jsp:include page="/module/bulma/spinner.jsp" />
 
 <style type="text/css">
     .sample-item-overlay-button {
@@ -39,14 +40,15 @@
 </style>
 
 
+
 <script >
     var sampleSessionPictureManager = Vue.component('sample-session-picture-manager', {
         template: `
 <div class="card">
     <div class="card-image">
-        <figure class="image is-4by3">
+        <figure class="image is-4by3" style="overflow: hidden;">
             <img v-if="activeId == 0" :src="unknownURL">
-            <img v-if="activeId != 0" :src="images[activeId]['imageSrc']">
+            <img v-if="activeId != 0" :src="images[activeId]['imageSrc']" v-bind:style="{ transform: rotateVal }">
         </figure>
         <div class="columns is-mobile is-vcentered is-overlay is-multiline" style="margin: 0px;">
             <div class="column is-full" style="height: 20%;">
@@ -56,6 +58,8 @@
                     <div class="column" style="padding: 0px; margin: 0px;">
                         <span><i class="fa fa-image sample-item-overlay-button" v-on:click="selectImage" aria-hidden="true"></i></span>
                         <span><i class="fa fa-trash sample-item-overlay-button" v-on:click="deleteClick" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-angle-right sample-item-overlay-button" v-on:click="rotateRightClick" aria-hidden="true"></i></span>
+                        <span><i class="fa fa-angle-left sample-item-overlay-button" v-on:click="rotateLeftClick" aria-hidden="true"></i></span>
                     </div>
                 </div>
             </div>
@@ -77,7 +81,7 @@
     </div>
     <div class="card-content">
         <div class="columns is-mobile is-multiline" style="margin: 0px;">
-            <session-picture-upload v-on:select-image="addSessionImage"></session-picture-upload>
+            <session-picture-upload v-on:add-session-image="addSessionImage"></session-picture-upload>
             <session-picture-select
                 v-for="image in images"
                 :session-image="image"
@@ -103,7 +107,7 @@
                 type: String
             },
             editedImageSrc: {
-              type: String
+                type: String
             },
             title: {
                 type: String
@@ -122,7 +126,8 @@
                 file: '',
                 sharedState: store.state,
                 images: {},
-                activeId: 0
+                activeId: 0,
+                rotate: 0
             }
         },
         components: {
@@ -130,16 +135,24 @@
             sessionPictureSelect
         },
         computed: {
+            waiterVal: function () {
+                return store.getFromForm('waiter', 'wait');
+            },
             imagesVal: function () {
                 return store.getFromForm('session', 'images');
             },
             activeIdVal: function () {
                 return store.getFromForm('session', 'activeId');
+            },
+            rotateVal: function () {
+                return 'rotate(' + this.rotate + 'deg)';
             }
         },
         watch: {
+            waiterVal: function () {
+                store.getFromForm('waiter', 'wait');
+            },
             imagesVal: function () {
-                console.log("+")
                 this.images = store.getFromForm('session', 'images');
             },
             activeIdVal: function () {
@@ -155,11 +168,20 @@
             selectSessionImage: function(id) {
                 this.$emit("select-session-image", id);
             },
-            addSessionImage: function (image) {
-                this.$emit("add-session-image", image);
+            addSessionImage: function (image, rotate) {
+                console.log("click")
+                this.$emit("add-session-image", image, rotate);
             },
             deleteClick: function () {
                 this.$emit("delete-session-image", this.activeId);
+            },
+            rotateLeftClick: function () {
+                this.rotate -= 90;
+                console.log("rotate left", this.rotate)
+            },
+            rotateRightClick: function () {
+                this.rotate += 90;
+                console.log("rotate right", this.rotate)
             },
             selectImage() {
                 this.$refs.file.click();

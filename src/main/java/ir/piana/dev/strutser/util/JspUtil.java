@@ -24,12 +24,12 @@ public class JspUtil {
     public static String getStore(String storeName, String... forms) {
         StringBuffer sb = new StringBuffer();
         sb.append("var " + ((storeName == null || storeName.isEmpty()) ? "store" : storeName) + "={\n" +
-                "        state:{forms: {");
+                "        state:{forms: {waiter: {wait: 0},");
                 if(forms.length > 0) {
                     for (String form : forms)
                         sb.append(form).append(": {},");
-                    sb.deleteCharAt(sb.length() - 1);
                 }
+        sb.deleteCharAt(sb.length() - 1);
                 sb.append("}},\n" +
                 "        setToForm: function(formName, propertyName, property) {\n" +
                 "            this.state.forms[formName][propertyName] = property;\n" +

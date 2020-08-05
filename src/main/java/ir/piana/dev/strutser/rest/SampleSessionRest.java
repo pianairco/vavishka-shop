@@ -3,6 +3,7 @@ package ir.piana.dev.strutser.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ir.piana.dev.strutser.service.sql.SqlService;
 import ir.piana.dev.strutser.service.storage.StorageService;
+import ir.piana.dev.strutser.service.storage.business.InsertSampleSessionImageBusiness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class SampleSessionRest {
     @Autowired
     private ObjectMapper mapper;
 
+    @Autowired
+    private InsertSampleSessionImageBusiness insertSampleSessionImageBusiness;
+
     @PostMapping(path = "sample/session/add", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
@@ -45,13 +49,16 @@ public class SampleSessionRest {
         map.put("description", (String)sampleItem.get("description"));
         map.put("orders", sampleItem.get("orders"));
         map.put("icon_src", iconSrc);
+
+        insertSampleSessionImageBusiness.insert(iconSrc, id, 1);
+
         return ResponseEntity.ok(map);
     }
 
     @PostMapping(path = "sample/session/edit", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity editItem(
+    public ResponseEntity editSession(
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group){
         String imageSrc = null;
@@ -74,7 +81,7 @@ public class SampleSessionRest {
     @PostMapping(path = "sample/session/delete", consumes = MediaType.APPLICATION_JSON_VALUE,
                 produces = MediaType.APPLICATION_JSON_VALUE)
     @Transactional
-    public ResponseEntity deleteItem(
+    public ResponseEntity deleteSession(
             @RequestBody Map<String, Object> sampleItem,
             @RequestHeader("file-group") String group) {
         sqlService.delete(group, new Object[]{sampleItem.get("id")});

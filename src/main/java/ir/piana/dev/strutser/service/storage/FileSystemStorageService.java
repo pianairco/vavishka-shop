@@ -14,6 +14,7 @@ import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.MalformedURLException;
@@ -44,10 +45,17 @@ public class FileSystemStorageService implements StorageService {
     public String store(MultipartFile file, String group) {
         Integer width = storageProperties.getGroups().get(group).getWidth();
         Integer height = storageProperties.getGroups().get(group).getHeight();
-        return this.store(file, group, width, height);
+        return this.store(file, group, "0", width, height);
     }
 
-    public String store(MultipartFile file, String group, Integer width, Integer height) {
+    @Override
+    public String store(MultipartFile file, String group, String rotation) {
+        Integer width = storageProperties.getGroups().get(group).getWidth();
+        Integer height = storageProperties.getGroups().get(group).getHeight();
+        return this.store(file, group, rotation, width, height);
+    }
+
+    public String store(MultipartFile file, String group, String rotation, Integer width, Integer height) {
         String format = file.getOriginalFilename()
                 .substring(file.getOriginalFilename().lastIndexOf(".") + 1);
         String random = RandomStringUtils.randomAlphanumeric(64).concat(".").concat(format);
@@ -72,8 +80,12 @@ public class FileSystemStorageService implements StorageService {
 //                            originalImage, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_WIDTH, 2000, 750);
                     int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB
                             : originalImage.getType();
-                    BufferedImage scaledImg = resizeImage(originalImage, type, width, height);
+                    int rotate = 0;
+                    if(rotation != null && !rotation.isEmpty() && !rotation.equalsIgnoreCase("0"))
+                        rotate = Integer.parseInt(rotation);
+                    BufferedImage scaledImg = manipulateImage(originalImage, type, rotate, width, height);
 //                    ImageIO.write(scaledImg, format, new File(filePath));
+
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
                     ImageIO.write(scaledImg, format, os);
                     // Passing: ​(RenderedImage im, String formatName, OutputStream output)
@@ -124,7 +136,7 @@ public class FileSystemStorageService implements StorageService {
             int type = originalImage.getType() == 0? BufferedImage.TYPE_INT_ARGB
                     : originalImage.getType();
 
-            BufferedImage scaledImg = resizeImage(originalImage, type,
+            BufferedImage scaledImg = manipulateImage(originalImage, type, 0,
                     storageProperties.getGroups().get(group).getWidth(),
                     storageProperties.getGroups().get(group).getHeight());
 
@@ -143,15 +155,48 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
-    private static BufferedImage resizeImage(BufferedImage originalImage, int type,
-                                             Integer img_width, Integer img_height)
+    public static BufferedImage rotateImageByDegrees(BufferedImage img, int type, double angle) {
+
+        double rads = Math.toRadians(angle);
+        double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
+        int w = img.getWidth();
+        int h = img.getHeight();
+        int newWidth = (int) Math.floor(w * cos + h * sin);
+        int newHeight = (int) Math.floor(h * cos + w * sin);
+
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, type);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate((newWidth - w) / 2, (newHeight - h) / 2);
+
+        int x = w / 2;
+        int y = h / 2;
+
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        return rotated;
+    }
+
+    private static BufferedImage manipulateImage(
+            BufferedImage originalImage, int type,
+            Integer rotation, Integer img_width, Integer img_height)
     {
         BufferedImage resizedImage = new BufferedImage(img_width, img_height, type);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, img_width, img_height, null);
         g.dispose();
 
-        return resizedImage;
+//        Graphics2D g2r = resizedImage.createGraphics();
+//        AffineTransform identity = new AffineTransform();
+//        AffineTransform trans = new AffineTransform();
+//        trans.setTransform(identity);
+//        trans.rotate(Math.toRadians(rotation));
+//        g2r.drawImage(resizedImage, trans, null);
+
+        return rotateImageByDegrees(resizedImage, type, rotation);
     }
 
     @Override

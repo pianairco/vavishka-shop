@@ -3,8 +3,10 @@
 <jsp:include page="/module/bulma/pictorial-menu-item.jsp" />
 <jsp:include page="/module/bulma/pictorial-menu-item-creator.jsp" />
 <jsp:include page="/module/sample-session/sample-session-picture-manager.jsp" />
+<jsp:include page="/module/bulma/spinner.jsp" />
 
 <div class="container" id="bulma-sample-page">
+    <spinner></spinner>
     <div class="columns is-mobile is-multiline">
         <div class="column is-full-mobile is-one-quarter-desktop">
             <pictorial-menu-item-creator v-on:add-item="addItem" :form-name="'uploader1'" :icon-property-name="'icon'">
@@ -48,7 +50,7 @@
                 sessions: ${sessions},
                 editedId: 0,
                 activeId: 0,
-                imageUploadGroup: 'sample-session-image',
+                imageUploadGroup: 'insert-sample-session-image',
                 imageUploadUrl: '/images/image-upload',
             }
         },
@@ -87,12 +89,14 @@
                 console.log(id)
                 store.setToForm('session', 'activeId', id);
             },
-            addSessionImage: function (image) {
-                console.log("add new session image:", image);
+            addSessionImage: function (image, rotate) {
+                console.log("add new session image:", image, rotate);
+                store.setToForm('waiter', 'wait', 1)
                 let formData = new FormData();
                 formData.append('file', image);
                 let headers = {
                     'image_upload_group': this.imageUploadGroup,
+                    'image-upload-rotation': rotate,
                     'sessionId': 'i:' + this.activeId,
                     'orders': 'i:' + (Object.keys(this.sessionImageMap).length + 1),
                     'Content-Type': 'multipart/form-data'
@@ -102,9 +106,11 @@
                     headers: headers
                 }).then((res) => {
                     store.setToFormProperty('session', 'images', res['data']['id'], res['data']);
+                    store.setToForm('waiter', 'wait', 0)
                 }).catch((e) => {
                     console.log('FAILURE!!');
                     console.log(e);
+                    store.setToForm('waiter', 'wait', 0)
                 });
             },
             replaceSessionImage: function (image, imageId) {
@@ -150,6 +156,7 @@
             // console.log(this.sessionMap);
         },
         components: {
+            spinner,
             pictorialMenuItem,
             pictorialMenuItemCreator,
             sampleSessionPictureManager

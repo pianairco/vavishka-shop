@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
-@Component("sampleSessionImageBusiness")
-public class SampleSessionImageBusiness implements AfterSaveImage {
+@Component("insertSampleSessionImageBusiness")
+public class InsertSampleSessionImageBusiness implements AfterSaveImage {
     @Autowired
     private SqlService sqlService;
 
@@ -19,13 +19,18 @@ public class SampleSessionImageBusiness implements AfterSaveImage {
         Object sessionId = getValueObject(request.getHeader("sessionId"));
         Object orders = getValueObject(request.getHeader("orders"));
 
-        long id = sqlService.insertByQueryName("insert-session-image", "vavishka_seq",
-                new Object[]{path, sessionId, orders});
+        long id = insert(path, sessionId, orders);
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("id", id);
         map.put("session_id", sessionId);
         map.put("orders", orders);
         map.put("image_src", path);
         return ResponseEntity.ok(map);
+    }
+
+    public long insert(String path, Object sessionId, Object orders) {
+        long id = sqlService.insertByQueryName("insert-session-image", "vavishka_seq",
+                new Object[]{path, sessionId, orders});
+        return id;
     }
 }

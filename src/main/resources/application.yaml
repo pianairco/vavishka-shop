@@ -36,11 +36,11 @@ storage:
       folder: sample
       width: 640
       height: 640
-    sample-session-image:
+    insert-sample-session-image:
       folder: sample-session
       width: 512
       height: 512
-      afterSaveImage: sampleSessionImageBusiness
+      afterSaveImage: insertSampleSessionImageBusiness
     replace-sample-session-image:
       folder: sample-session
       width: 512

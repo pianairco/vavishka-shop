@@ -14,7 +14,9 @@ public interface StorageService {
 
     String store(MultipartFile file, String group);
 
-    String store(MultipartFile file, String group, Integer width, Integer height);
+    String store(MultipartFile file, String group, String rotation);
+
+    String store(MultipartFile file, String group, String rotation, Integer width, Integer height);
 
     String store(String file, String group);
 

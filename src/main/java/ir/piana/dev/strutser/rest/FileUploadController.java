@@ -65,7 +65,8 @@ public class FileUploadController {
             @RequestHeader("image_upload_group") String group,
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
-        String path = storageService.store(file, group);
+        String rotation = request.getHeader("image-upload-rotation");
+        String path = storageService.store(file, group, rotation);
 
         GroupProperties groupProperties = storageService.getGroupProperties(group);
         String afterSaveImageName = groupProperties.getAfterSaveImage();
